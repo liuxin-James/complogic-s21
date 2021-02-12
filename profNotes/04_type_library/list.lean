@@ -1,5 +1,0 @@
-namespace hidden
-
-
-
-end hidden

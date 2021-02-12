@@ -39,8 +39,7 @@ inductive option (α : Type) : Type
 EXERCISE: Represent the partial function
 just described using the option type as
 just explained. Write your definition in
-a separate file, optionExample.lean, that
-imports the definitions in this file. 
+a separate file, option_test.lean.
 -/
 
 

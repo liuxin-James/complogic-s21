@@ -11,4 +11,15 @@ cases to consider.
 -/
 inductive empty : Type
 
+/-
+Exercise: Show that you can
+implement a function, e2n, that
+takes (assumes it's given) an
+argument, e, of type empty and
+that then uses match/with/end
+to "eliminate" e and to return
+without returning any particular
+value of type nat.
+-/
+
 end hidden

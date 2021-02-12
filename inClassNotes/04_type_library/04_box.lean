@@ -12,7 +12,9 @@ the field who value it projects
 (i.e., accesses and returns).
 -/
 
-structure box (α : Type) : Type :=
+universe u
+
+structure box (α : Type u) : Type u :=
 (val : α)
 
 end hidden
