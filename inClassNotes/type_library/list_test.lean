@@ -24,14 +24,17 @@ def lnat0 : list nat := list.nil
 
 def lnat1 : list nat :=
   list.cons
-    (_)
-    (_)
+    (1)
+    (list.cons 
+      (2)
+      list.nil
+    )
 
 def lstr1 : list string :=
   list.cons 
-    (_)
+    ("1")
     (list.cons
-      (_)
+      ("2")
       (list.nil)
     )
 /-
@@ -48,25 +51,33 @@ def head { α : Type } : list α → option α
 | list.nil := none
 | (list.cons h t) := some h
 
+#reduce head lnat1
+
 def tail { α : Type } : list α → option (list α) 
 | list.nil := none
 | (list.cons h t) := some t
 
 -- recursive definition of length (by cases)
+-- strucute recursion can guarantees to teminate
 def length {α : Type} : list α → nat
 | list.nil := 0 
-| (list.cons h t) := (_) + 1   -- length in context
+| (list.cons h t) := (length t) + 1   -- length in context
 
 def append {α : Type} : list α → list α → list α
-| list.nil         m := _
-| (list.cons h t)  m := _
+| list.nil         m := m
+| (list.cons h t)  m := list.cons h (append t m)
+-- h :: append t m
+
+#eval append lnat0 lnat1
 
 def pure {α : Type} : α → list α 
 | a := list.cons a list.nil
 
 def reverse {α : Type} : list α → list α 
 | list.nil := list.nil
-| (list.cons h t) :=  _
+| (list.cons h t) :=  append(reverse t) (pure h)
+
+#eval reverse lnat1
 
 #eval reverse (list.cons 1 (list.cons 2 list.nil))
 
@@ -123,8 +134,8 @@ def length {α : Type} : list α → nat
 #eval (pure 5 : option nat) -- whoa (later)
 
 def reverse {α : Type} : list α → list α 
-| list.nil := list.nil
-| (h::t) :=  _    -- use nice notation here
+| [] := []
+| (h::t) :=  (reverse t)++[h]    -- use nice notation here
 
 universe u
 

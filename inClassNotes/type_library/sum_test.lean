@@ -68,6 +68,8 @@ inductive veggy
 | brocolli
 | turnip
 
+
+#check fruit
 open fruit veggy
 
 /-
@@ -81,6 +83,9 @@ healthy, so we don't want a pair of foods.
 def p1 : prod fruit veggy := prod.mk apple kale
 def p2 : fruit × veggy := (apple, kale)
 
+
+#check p1
+#check p2
 /-
 Rather, we want *either* a fruit or a veggy,
 but only one of the two. Voila, the sum type.
@@ -92,3 +97,4 @@ def healthy2 : fruit ⊕ veggy := sum.inr kale
 
 
 #check @sum.inl
+#check healthy1

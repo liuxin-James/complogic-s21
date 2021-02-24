@@ -51,7 +51,7 @@ def my_id : nat → nat := (λ n, n)   -- lambda expression, literal
 --  Ident   Type         Value
                                     -- type inference in use
 
-#reduce (my_id 1)
+#reduce my_id 1
 #reduce (my_id 4)
 -- #reduce (my_id "Hello, Lean!")
 

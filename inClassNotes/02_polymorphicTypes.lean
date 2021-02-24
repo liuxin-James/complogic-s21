@@ -230,9 +230,14 @@ def fun_box : box (nat → nat) := box.mk (nat.succ)
 
 def crazy_box : box (box (nat → nat)) := box.mk (box.mk nat.succ)
 
+#check fun_box
 #check crazy_box
-def f : ℕ → ℕ := (box.val) fun_box
+def f : ℕ → ℕ := box.val fun_box
 #eval f 5
+
+def C : ℕ → ℕ := box.val (box.val crazy_box)
+
+#eval C 3
 
 #check nat → nat 
 #check nat.succ

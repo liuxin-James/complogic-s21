@@ -7,6 +7,7 @@ inductive list (α : Type u) : Type u
 | cons (h : α) (t : list) : list
 
 #check list
+#check list
 #check list nat
 #check list string
 #check list bool 
@@ -22,6 +23,8 @@ def t : list nat :=
         list.nil)
     )
 
+#reduce l
+#check l
 #check (list.cons 5 list.nil)
 -- [3,4,5]
 

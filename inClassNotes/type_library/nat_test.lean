@@ -199,7 +199,7 @@ def pred : nat → nat
 -- this notation won't work
 def pred'' : nat → nat
 | nat.zero := nat.zero
-| 1 + n := n' 
+| 1 + n' := n' 
 
 -- subtle difference in notations here
 #reduce n + 1   -- succ n
@@ -239,7 +239,7 @@ def fib : ℕ → ℕ
 | 1 := 1
 | (n' + 2) := fib (n' + 1) + fib n'
 
-#eval fib 5
+#eval fib 6
 
 /- 
 Exercise: On a piece of paper, draw

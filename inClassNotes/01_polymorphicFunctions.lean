@@ -8,6 +8,8 @@ def id_string : string → string :=
 def id_bool : bool → bool :=
   λ n, n 
 
+
+#reduce id_string 
 -- parametric polymorphism
 
 namespace hidden 
@@ -55,18 +57,18 @@ def id : Π { α : Type u}, α → α :=
 #eval id 5
 
 -- error cases
-#eval id _         -- can't infer α 
-#eval id nat _     -- type error!
+--#eval id _         -- can't infer α 
+--#eval id nat _     -- type error!
 
 -- turn off implicit typing
-#eval (@id nat) _   -- all goot, expects ℕ 
+#eval (@id nat) 5   -- all goot, expects ℕ 
 
 #check 1
 #check nat 
 #check Type 
 #check Type 1
 
-#reduce (id nat)
+#reduce (id tt)
 
 
 end hidden 

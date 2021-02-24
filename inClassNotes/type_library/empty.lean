@@ -38,4 +38,7 @@ def e2n (e : empty) : nat :=
 match e with
 end 
 
+#check e2n
+#reduce e2n 
+
 end hidden

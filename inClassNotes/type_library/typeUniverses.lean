@@ -13,6 +13,8 @@ def b3 : box nat := box.mk 3
 
 def nope : box Type := box.mk nat
 
+#check nope
+
 /-
 Every term has a type. 
 Types are terms, too.
