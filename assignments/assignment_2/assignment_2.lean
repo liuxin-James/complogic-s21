@@ -33,6 +33,11 @@ by a smaller ST expression (similarly).
 -/
 
 -- YOUR DATA TYPE DEFINITION HERE
+inductive ST : Type
+| empty
+| salmon (st: ST)
+| trout  (st: ST)
+
 
 /-
 Now assume that the *meaning* of a 
@@ -61,7 +66,13 @@ be recursive.
 -/
 
 -- YOUR EVAL AND HELPER FUNCIONS HERE
+def fishEvalHelper : ST → nat × nat → nat × nat
+| ST.empty p := p
+| (ST.salmon st) p := fishEvalHelper st (p.fst+1, p.snd)
+| (ST.trout st) p := fishEvalHelper st (p.fst, p.snd+1)
 
+def fishEval : ST → nat × nat
+| st := fishEvalHelper st (0,0)
 /-
  WRITE SOME TEST CASES
 
@@ -71,6 +82,20 @@ be recursive.
     an expression with three salmon
     and two trout.
 -/
+#eval fishEval ST.empty
+
+
+#eval fishEval  (ST.salmon 
+                    (ST.trout 
+                        (ST.salmon 
+                            (ST.salmon
+                                (ST.trout
+                                    (ST.empty)
+                                )
+                            )
+                        )
+                    )
+                )
 
 /-
 2. [25 points] polymorphic functions 
@@ -89,7 +114,8 @@ with the name, id.
 -/
 
 -- YOUR ANSWER HERE
-
+universe u
+def id' {α : Type u} : α → α := λ a, a
 
 /-
 When you've succeded, the following
@@ -148,14 +174,18 @@ represent this partial function.
 -/
 
 -- YOUR ANSWER HERE
-
+def pId_bool: bool → option bool
+| tt := tt
+| _ := none
 /-
 TEST YOUR FUNCTION
 Use #eval or #reduce to show that your
 function works as expected for both 
 argument values. 
 -/
+#eval pId_bool tt
 
+#eval pId_bool ff
 -- HERE
 
 
@@ -181,10 +211,12 @@ structure box (α : Type u) : Type u :=
 (val : α)
 
 -- YOUR FUNCTION HERE
+def liftF2Box {α β : Type u} (f : α → β): box α → box β :=  fun a, box.mk (f a.val)
 
 -- WHEN YOU'VE GOT IT, THIS TEST SHOULD PASS
 
-#reduce (liftF2Box nat.succ) (box.mk 3) 
+#check @liftF2Box
+#reduce (liftF2Box nat.succ) (box.mk 3)
 /- 
 Expect {val:=4}. This is Lean notation for a 
 structure (here a box) with one field, val, 
