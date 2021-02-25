@@ -32,9 +32,9 @@ recursion on l.
 
 -- ANSWER HERE
 universe u
-def map_list_nat {α β: Type u} : (f: α → β) → list α→ option(list β)
-| f list.nil := none
-| f (h::t) := (h + 1) :: (f t)
+def map_list_nat {α β: Type u} : (α → β) → list α → list β
+| f list.nil := list.nil
+| f (h::t) := (f h) :: (map_list_nat f t)
 
 #eval map_list_nat nat.succ [1,2,3]
 /-
@@ -45,8 +45,9 @@ value. Include [], [2], and [1,2,3] in
 your set of test inputs and use comments
 to document the expected return values.
 -/
-
-
+#eval map_list_nat double [1,2,3]
+#eval map_list_nat double [2]
+#eval map_list_nat double []
 
 /-
 4. In Lean, repr is an "overloaded"
@@ -59,9 +60,7 @@ when applied to a nat value it returns
 a corresponding string. It's "toString"
 for Lean. Here's an example.
 -/
-
 #eval repr 5
-
 /-
 Write a function map_list_nat_string
 that takes a list of nat values and
@@ -71,7 +70,11 @@ converted to a string using repr.
 -/
 
 -- ANSWER HERE
+def map_list_nat_string : list ℕ → list string
+| [] := []
+| (h::t) := (repr h)::(map_list_nat_string t)
 
+#eval map_list_nat_string [1,2,3]
 
 /-
 5. Write a function, filterZeros,
@@ -83,8 +86,18 @@ and all zero values removed. Given
 should return [1,2,3,4,5].
 -/
 
--- ANSWER HERE
+-- ANSWER HEREh::t
+def filterZeros  {α : Type u} : 
+  (α → bool) → list α → list α 
+| f [] := []
+| f (h::t) := if (f h) 
+              then h::(filterZeros f t) 
+              else (filterZeros f t)
 
+def isZero (n : nat) : bool := n ≠ 0
+
+#eval filterZeros isZero [1,2,0,3,4,0, 0, 5] 
+#eval filterZeros isZero [0]
 
 /-
 6. Write a function, isEqN, that
@@ -96,6 +109,9 @@ sure to test your function.
 -/
 
 -- ANSWER HERE
+def isEqN: ℕ → (ℕ→ bool) := λ n, λ m, n=m
+
+#eval isEqN 3 4
 
 
 /-
@@ -112,9 +128,14 @@ argument return true or false).
 -/
 
 -- ANSWER HERE
+def filterNs {α : Type u} : 
+  (α → bool) → list α → list α 
+| f []:=[]
+| f (h::t) := if (f h) 
+              then (filterNs f t)
+              else h::(filterNs f t) 
 
-
-
+#eval filterNs (isEqN 4) [1,2,4,5,6]
 /-
 8. Write a function, iterate, that 
 takes as its arguments (1) a function, 
@@ -132,7 +153,13 @@ nat.succ, your double function, and
 -/
 
 -- ANSWER HERE
+def iterate: (ℕ → ℕ) → ℕ → ℕ → ℕ 
+| f 0 m:= m
+| f (n+1) m:= iterate f n (f m)
 
+#eval iterate nat.succ 4 4
+#eval iterate double 2 4
+#eval iterate (nat.add 4) 2 4
 
 /-
 9. Write a function, list_add, that takes
@@ -141,7 +168,11 @@ sum of all the numbers in the list.
 -/
 
 -- ANSWER HERE
+def list_add: list ℕ → ℕ 
+| []:=0
+| (h::t) := (list_add t) +h
 
+#eval list_add [1,3,4,5,5]
 
 /-
 10. Write a function, list_mul, that takes
@@ -150,7 +181,12 @@ product of all the numbers in the list.
 -/
 
 -- ANSWER HERE
+def list_mul: list ℕ → ℕ 
+| []:=1
+| (h::t) := (list_mul t) * h
 
+#eval list_mul [1,3,4]
+#eval list_mul [1]
 
 /-
 11. Write a function, list_has_zero, that
@@ -163,9 +199,12 @@ that both have and don't have zero values.
 -/
 
 -- ANSWER HERE
+def list_has_zero: list ℕ → bool
+| [] := ff
+| (h::t) := bor (isEqN 0 h) (list_has_zero t)
 
-
-
+#eval list_has_zero [1,2,4,0]
+#eval list_has_zero [1,2,4,5]
 /-
 12. Write a function, compose_nat_nat,
 that takes two functions, f : ℕ → ℕ,
@@ -177,6 +216,10 @@ argument values.
 -/
 
 -- ANSWER HERE
+def compose_nat_nat: (ℕ → ℕ) → (ℕ → ℕ) → ℕ → ℕ
+| f g a := g (f a)  
+
+#eval compose_nat_nat nat.succ double 2
 
 
 /-
@@ -194,6 +237,12 @@ by the application of f.
 -/
 
 -- ANSWER HERE
+structure box (α : Type u) : Type u :=
+(val : α)
+
+def map_box {α β : Type u} (f : α → β): box α → box β :=  fun a, box.mk (f a.val)
+
+#reduce (map_box double) (box.mk 5)
 
 /-
 14. 
@@ -206,8 +255,14 @@ some b, where b is a transformed by
 f.
 -/
 
--- ANSWER HERE
 
+-- ANSWER HERE
+def map_option {α β : Type u} : (α → β) → option α → option β
+| f option.none := option.none
+| f (option.some a) :=  option.some (f a)
+
+#reduce map_option double (option.some 3)
+#reduce map_option double (option.none)
 
 /-
 15. Write three functions, default_nat,
@@ -223,4 +278,10 @@ universe variable for the list problem.
 -/
 
 -- ANSWER HERE
+def default_nat:
 
+
+def default_bool: 
+
+
+def default_list {α: Type u}:
