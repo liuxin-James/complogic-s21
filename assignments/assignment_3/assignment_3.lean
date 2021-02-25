@@ -10,8 +10,6 @@ definition:
 - double 0 = 0
 - double (n' + 1) = double n' + 2
 -/
-
-
 -- ANSWER HERE
 
 /-
