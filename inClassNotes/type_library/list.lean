@@ -25,6 +25,7 @@ def t : list nat :=
 
 #reduce l
 #check l
+#reduce t
 #check (list.cons 5 list.nil)
 -- [3,4,5]
 

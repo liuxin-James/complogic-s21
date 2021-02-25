@@ -6,11 +6,17 @@ HIGHER-ORDER FUNCTION WARMUP
 1. Write a function, double, that takes
 a natural number and returns its double.
 Write it using the following recursive
-definition:
+definition:s
 - double 0 = 0
 - double (n' + 1) = double n' + 2
 -/
 -- ANSWER HERE
+def double : ℕ → ℕ 
+| 0 := 0
+| (n + 1) := double n + 2
+
+#eval double 3
+#eval double 0
 
 /-
 2. Write a function, map_list_nat, that 
@@ -25,8 +31,12 @@ recursion on l.
 -/
 
 -- ANSWER HERE
- 
+universe u
+def map_list_nat {α β: Type u} : (f: α → β) → list α→ option(list β)
+| f list.nil := none
+| f (h::t) := (h + 1) :: (f t)
 
+#eval map_list_nat nat.succ [1,2,3]
 /-
 3. Test your map_list_nat function by
 applying it to several lists, both empty
