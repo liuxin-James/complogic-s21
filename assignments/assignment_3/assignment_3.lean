@@ -278,10 +278,10 @@ universe variable for the list problem.
 -/
 
 -- ANSWER HERE
-def default_nat:
+def default_nat := 5
 
+def default_bool := tt
 
-def default_bool: 
+def default_list {α: Type u}: [1, 2, 4, 5]
 
-
-def default_list {α: Type u}:
+#reduce double default_nat

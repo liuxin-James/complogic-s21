@@ -240,6 +240,7 @@ def fib : ℕ → ℕ
 | (n' + 2) := fib (n' + 1) + fib n'
 
 #eval fib 6
+#eval fac 3
 
 /- 
 Exercise: On a piece of paper, draw

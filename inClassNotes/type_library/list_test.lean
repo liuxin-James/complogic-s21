@@ -157,7 +157,9 @@ def map_ev_string_bool :
   list string →
   list bool 
 | list.nil := list.nil
-| (h::t) := (h.length%2=0)::_
+| (h::t) := (h.length%2=0)::(map_ev_string_bool t)
+
+#eval map_ev_string_bool strlist
 
 def map_odd_string_bool :
   list string →
