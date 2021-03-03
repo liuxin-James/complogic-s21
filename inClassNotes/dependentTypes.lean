@@ -98,9 +98,9 @@ The length is typechecked! The error
 messages are cryptic, but, hey.
 -/
 
-def t3' : tuple 3 := (1, 2, 3, 4, unit.star) -- no
+def t3' : tuple 4 := (1, 2, 3, 4, unit.star) -- no
 def t3'' : tuple 3 := (1, 2, 4, unit.star) -- no
-
+#check t3'
 /-
 We could define a nicer concrete syntax that 
 would let us avoid having to write the star
@@ -142,7 +142,7 @@ def cons : Π {n : ℕ}, nat → tuple n → tuple (n + 1)
 | n a t := prod.mk a t
 
 -- {2} 7 (1, 2, star) -> (7, (1, 2, star))
--- #reduce cons 7 ((1, (2, unit.star)) : tuple 2)
+--#reduce cons 7 ((1, (2, unit.star)) 
 
 def head : Π {n : nat}, tuple  n → option nat
 | 0 _ := none
@@ -159,10 +159,11 @@ def append :
 
 def t6 := append t3 t3
 #reduce t6
+#reduce tail 3 t3
 
 -- Type check catches bounds errors
 def foo (t : tuple 3) : nat := 0
-#check foo t2   -- No: type of t2 is tuple 2, not tuple 3
+#check foo t3   -- No: type of t2 is tuple 2, not tuple 3
 
 /-
 DEPENDENT FUNCTION TYPES
@@ -186,7 +187,7 @@ def zerotuple : Π (n : nat), tuple n
 -- Π (n : nat), tuple n
 
 #reduce zerotuple 4
-#check zerotuple 4
+#check zerotuple 
 
 def nToNtuple (n : nat) : tuple n := zerotuple n
 #check nToNtuple

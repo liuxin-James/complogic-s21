@@ -12,6 +12,26 @@ is to return true (tt) if and only there is some
 tt value in the list.
 -/
 
+def isEqN: ℕ → (ℕ→ bool) := λ n, λ m, n=m
+
+def someSatisfies {α : Type} : (α → bool) → (list α) → bool
+| p [] := ff
+| p (h::t) := if (p h)
+              then tt
+              else someSatisfies p t
+
+#eval someSatisfies (isEqN 4) [1,2,3,4]
+#eval someSatisfies (isEqN 4) [1,2,3]
+
+def list_map {α β : Type} : (α → β) → list α → list β
+| f list.nil := list.nil
+| f (h::t) := (f h)::(list_map f t)
+
+def someSatisfies : bool :=  list_map 
+
+#eval list_map (isEqN 4) [1,2,3,4]
+
+
 /-
 2.  Write a polymorphic function, allSatisfy, 
 that takes a a predicate function, p, of type 
@@ -25,6 +45,8 @@ then pass to a helper function, the job of which
 is to return true (tt) if and only every value
 in the list is tt. 
 -/
+
+
 
 /-
 3. Write a function called simple_fold_list.

@@ -1,5 +1,5 @@
 def func (n : nat) : (nat → nat) :=
-  λ (m : ℕ), m + n 
+  λ m, m + n 
 
 def foo (n : nat) : (nat → (string → bool)) :=
 fun (m : nat), 
@@ -34,6 +34,8 @@ def func (3 : nat) : (nat → nat) :=
 
 -- ℕ → (ℕ → ℕ)
 #check nat.add
+
+#eval nat.add 3 4
 
 /-
 def func (n : nat) : (nat → nat) :=
