@@ -60,7 +60,7 @@ def tuple : nat → Type
 n   tuple (n' + 1) = nat ⨯ (tuple n')
 -/
 
-#check tuple  -- ℕ → Type (*important*)
+#check tuple 0  -- ℕ → Type (*important*)
 
 #check nat
 #check (prod nat nat)
@@ -88,6 +88,7 @@ def t1 : tuple 1 := (1, unit.star)  -- notation
 def t2 : tuple 2 := (1, 2, unit.star)
 def t3 : tuple 3 := (1, (2, (4, (unit.star))))
 
+
 --  (1, 2, unit.star)
 --  (1, (2, (unit.star)))
 -- prod.mk 1 (prod.mk 2 unit.star)
@@ -100,7 +101,7 @@ messages are cryptic, but, hey.
 
 def t3' : tuple 4 := (1, 2, 3, 4, unit.star) -- no
 def t3'' : tuple 3 := (1, 2, 4, unit.star) -- no
-#check t3'
+#check t3''
 /-
 We could define a nicer concrete syntax that 
 would let us avoid having to write the star
@@ -300,5 +301,5 @@ def evenId : {n : nat // n%2 = 0} → nat
 #eval evenId ⟨ 3, rfl ⟩ 
 #eval evenId ⟨ 4, rfl ⟩ 
 #eval evenId ⟨ 5, rfl ⟩ 
-
+#check evenId
 #print subtype

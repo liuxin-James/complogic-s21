@@ -35,7 +35,7 @@ def bool_not : bool → bool :=
 
 
 def e2n (e : empty) : nat :=
-match e with
+match e with 
 end 
 
 #check e2n

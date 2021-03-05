@@ -11,16 +11,22 @@ then pass to a helper function, the job of which
 is to return true (tt) if and only there is some
 tt value in the list.
 -/
+universe u
 
-def isEqN: ℕ → (ℕ→ bool) := λ n, λ m, n=m
-def list_map {α β : Type} : (α → β) → list α → list β
+def isEqN: ℕ → (ℕ → bool) := λ n, λ m, n=m
+
+def list_map {α : Type u} : (α → bool) → list α → list bool
 | f list.nil := list.nil
 | f (h::t) := (f h)::(list_map f t)
 
-def someSatisfies : bool :=  list_map 
+def anytt: list bool → bool
+| list.nil := ff
+| (h::t) := bor h (anytt t)
 
-#eval list_map (isEqN 4) [1,2,3,4]
+def someSatisfies {α : Type u}  (p: α → bool) (l : list α): bool := anytt (list_map p l) 
 
+#eval someSatisfies (isEqN 4) [1,2,3,4] 
+#eval someSatisfies (isEqN 4) [1,2,3]
 
 /-
 2.  Write a polymorphic function, allSatisfy, 
@@ -36,6 +42,14 @@ is to return true (tt) if and only every value
 in the list is tt. 
 -/
 
+def alltt: list bool → bool
+| list.nil := tt
+| (h::t) := band h (alltt t)
+
+def allSatisfy {α : Type u}  (p: α → bool) (l : list α): bool := alltt (list_map p l) 
+
+#eval allSatisfy (isEqN 4) [1,2,3,4] 
+#eval allSatisfy (isEqN 4) [4,4,4,4] 
 
 
 /-
@@ -56,6 +70,14 @@ simple_fold_list nat.add 0 [1,2,3,4,5] = 15
 simple_fold_list nat.mul 1 [1,2,3,4,5] = 120
 -/
 
+def simple_fold_list { α : Type u} :
+( α → α → α ) → α → list α → α
+| f id list.nil := id
+| f id (h::t) := f h (simple_fold_list f id t)
+
+#eval simple_fold_list nat.add 0 [1,2,3,4,5]
+#eval simple_fold_list nat.mul 1 [1,2,3,4,5]
+
 /-
 4. Write an application of simple_fold_list to
 reduce a list of strings to a single string in
@@ -68,10 +90,22 @@ For example, reduce ["Hello", " ", "Lean!"] to
 "Hello, Lean!"
 -/
 
+#eval simple_fold_list  (++) "" ["Hello", " ", "Lean!"]
+
 /-
 5. Re-implement here your helpder functions from
 questions 1 and 2 using simple_fold_list.
 -/
+
+def anytt' (l : list bool): bool := simple_fold_list (bor) ff l
+
+#eval anytt' [tt, tt, ff]
+#eval anytt' [ff, ff, ff]
+
+def alltt' (l : list bool): bool := simple_fold_list (band) tt l
+
+#eval alltt' [tt, tt, tt]
+#eval alltt' [ff, ff, ff]
 
 /-
 6. This question asks you to understand how to
@@ -87,7 +121,9 @@ inductive ev : ℕ → Type
 
 open ev
 
-
+#check ev_base
+#check ev_ind ev_base
+#check ev_ind (ev_ind ev_base)
 /-
 The first line of this definition explains that
 ev is a family of types indexed by values of type
@@ -117,17 +153,18 @@ as being our form of evidence that n+2 is even.
 in the placeholders with terms of the indicated
 dependent types. Use the available constructors
 to create these values. (Remember that the first
-argument to ev_ind is impliict, and not that it
+argument to ev_ind is impliict, and note that it
 can be inferred from the second argument.)
 -/
+def ev0 : ev 0 := ev_base
+def ev2 : ev 2 := ev_ind ev_base
+def ev4 : ev 4 := ev_ind (ev_ind ev_base)
+def ev6 : ev 6 := ev_ind (ev_ind (ev_ind ev_base))
+def ev8 : ev 8 := ev_ind (ev_ind (ev_ind (ev_ind ev_base)))
+def ev10 : ev 10 := ev_ind (ev_ind (ev_ind (ev_ind (ev_ind ev_base))))
 
-def ev0 : ev 0 := _
-def ev2 : ev 2 := _
-def ev4 : ev 4 := _
-def ev6 : ev 6 := _
-def ev8 : ev 8 := _
-def ev10 : ev 10 := _
-
+#check ev0 
+#check ev10
 /-
 6B. You should have been able to give values for 
 each of the preceding six types ev 0, ..., ev 10.
@@ -145,9 +182,10 @@ each of these types, in relation to the fact that
 these types have no values.
 -/
 
-def ev1 : ev 1 := _
-def ev3 : ev 3 := _
-def ev5 : ev 5 := _
+def ev1 : ev 1 := ev_ind (ev _)
+def ev3 : ev 3 := ev_ind ev1
+def ev5 : ev 5 := ev_ind ev3
+--Answer: since the ev function only works for even numbers, if n equals to odd numbers, the ev function cannot use any constructor to return the values of these types.
 
 /-
 6D. Define an inductive family, odd n, indexed by
@@ -157,8 +195,18 @@ even numbers have no values. Then show that you
 can complete the preceding three definitions if you
 replace ev by odd.
 -/
+inductive odd : ℕ → Type
+| odd_base : odd 1
+| odd_ind  {n : nat} (oddn : odd n) : odd (n + 2)
 
+open odd
+
+def odd1 : odd 1 := odd_base
+def odd3 : odd 3 := odd_ind odd_base
+def odd5 : odd 5 := odd_ind (odd_ind odd_base)
 /-
+
+
 7. As you know, the type, empty, is uninhabited.
 That is, it has no values. So what does it tell
 us if we can define a function of a type that
@@ -179,14 +227,21 @@ question at the beginning of this problem.
 -/
 
 def foo : ev 1 → empty :=
-λ (e : ev 1),
-  _
+fun (e : ev 1), match e with end 
+
+#check foo
 
 def bar : ev 3 → empty :=
-_
+fun (e : ev 3), match e with end 
+
+#check bar 
 
 def baz : ev 5 → empty :=
-_
+fun (e : ev 5), match e with end 
+
+#check baz
+--what does it tell us if we can define a function of a type that "returns a value of type empty?
+--Answer: It means that this type has no values.
 
 /- 8. Define evdp to be a sigma (dependent 
 pair) type, a value of which has a natural
@@ -199,17 +254,31 @@ respectively, 0, 2, and 4.
 
 def evdp := Σ (n : nat), ev n
 
-def evp0 : evdp := ⟨ 2, _ ⟩ 
+def evp0 : evdp := ⟨ 0, ev0 ⟩ 
+def evp2 : evdp := ⟨ 2, ev2 ⟩ 
+def evp4 : evdp := ⟨ 4, ev4 ⟩ 
+
+#reduce evp2
+#check evp0
+#check evp2
+#check evp4
 
 -- Your answers here
 
 /- 9. Write a function, mkEvp, that takes 
 a argument, n, of type nat, implicitly, and 
-an argument, nEv ot type, ev n, and that 
+an argument, nEv of type, ev n, and that 
 returns a value of type evdp (from the last
 problem). Then briefly answer the question, 
 in what sense does mkEvp have a dependent
 function type? 
 -/
+def ntoev : Π (n : nat), ev n 
+| 0 := ev_base
+| (n' + 2) := ev_ind (ntoev n')
+  
+def mkEvp {n : ℕ} (nEv : ev n): evdp := ⟨n, ntoev n⟩ 
 
+#reduce mkEvp ev2
+#check mkEvp ev2
 -- Your answers here

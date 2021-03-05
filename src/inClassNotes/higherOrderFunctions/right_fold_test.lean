@@ -50,6 +50,8 @@ def fold : nat → (nat → nat → nat) → list nat → nat
 | id f (list.nil) := id
 | id f (h::t) := f h (fold id f t)
 
+#eval fold 1 nat.add aList
+
 universe u
 
 def fold' {α : Type u} : α → (α → α → α) → list α → α 
