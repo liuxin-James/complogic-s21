@@ -30,7 +30,7 @@ def someSatisfies {α : Type u}  (p: α → bool) (l : list α): bool := anytt (
 
 /-
 2.  Write a polymorphic function, allSatisfy, 
-that takes a a predicate function, p, of type 
+that takes a predicate function, p, of type 
 α → bool, and list of values of type α (a type
 parameter), and and that returns true (tt) if 
 and only if for every value, v, in the list, 
@@ -93,7 +93,7 @@ For example, reduce ["Hello", " ", "Lean!"] to
 #eval simple_fold_list  (++) "" ["Hello", " ", "Lean!"]
 
 /-
-5. Re-implement here your helpder functions from
+5. Re-implement here your helper functions from
 questions 1 and 2 using simple_fold_list.
 -/
 
@@ -201,9 +201,14 @@ inductive odd : ℕ → Type
 
 open odd
 
+<<<<<<< HEAD
 def odd1 : odd 1 := odd_base
 def odd3 : odd 3 := odd_ind odd_base
 def odd5 : odd 5 := odd_ind (odd_ind odd_base)
+=======
+inductive empty' : Type
+
+>>>>>>> upstream/master
 /-
 
 
@@ -227,6 +232,7 @@ question at the beginning of this problem.
 -/
 
 def foo : ev 1 → empty :=
+<<<<<<< HEAD
 fun (e : ev 1), match e with end 
 
 #check foo
@@ -242,6 +248,10 @@ fun (e : ev 5), match e with end
 #check baz
 --what does it tell us if we can define a function of a type that "returns a value of type empty?
 --Answer: It means that this type has no values.
+=======
+λ (e : ev 1), _ -- match ... with ... end
+  -- for every possible form of e, return a value of type empty
+>>>>>>> upstream/master
 
 /- 8. Define evdp to be a sigma (dependent 
 pair) type, a value of which has a natural
@@ -252,6 +262,7 @@ of this type, whose first elements are,
 respectively, 0, 2, and 4.
 -/
 
+<<<<<<< HEAD
 def evdp := Σ (n : nat), ev n
 
 def evp0 : evdp := ⟨ 0, ev0 ⟩ 
@@ -262,12 +273,21 @@ def evp4 : evdp := ⟨ 4, ev4 ⟩
 #check evp0
 #check evp2
 #check evp4
+=======
+-- hint
+#check Σ (n : nat), ev n
+>>>>>>> upstream/master
 
 -- Your answers here
 
 /- 9. Write a function, mkEvp, that takes 
+<<<<<<< HEAD
 a argument, n, of type nat, implicitly, and 
 an argument, nEv of type, ev n, and that 
+=======
+a argument, mn, of type nat, iplicitly, and 
+an argument, nEv ot type, ev n, and that 
+>>>>>>> upstream/master
 returns a value of type evdp (from the last
 problem). Then briefly answer the question, 
 in what sense does mkEvp have a dependent
@@ -279,6 +299,11 @@ def ntoev : Π (n : nat), ev n
   
 def mkEvp {n : ℕ} (nEv : ev n): evdp := ⟨n, ntoev n⟩ 
 
+<<<<<<< HEAD
 #reduce mkEvp ev2
 #check mkEvp ev2
 -- Your answers here
+=======
+-- Your answers here
+
+>>>>>>> upstream/master
