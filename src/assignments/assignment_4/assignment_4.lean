@@ -13,16 +13,6 @@ tt value in the list.
 -/
 
 def isEqN: ℕ → (ℕ→ bool) := λ n, λ m, n=m
-
-def someSatisfies {α : Type} : (α → bool) → (list α) → bool
-| p [] := ff
-| p (h::t) := if (p h)
-              then tt
-              else someSatisfies p t
-
-#eval someSatisfies (isEqN 4) [1,2,3,4]
-#eval someSatisfies (isEqN 4) [1,2,3]
-
 def list_map {α β : Type} : (α → β) → list α → list β
 | f list.nil := list.nil
 | f (h::t) := (f h)::(list_map f t)
