@@ -11,6 +11,7 @@ structure box (α : Type u) : Type u :=
 
 def b3 : box nat := box.mk 3
 
+#check b3
 def nope : box Type := box.mk nat
 
 #check nope
