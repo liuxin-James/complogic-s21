@@ -1,5 +1,6 @@
 import ..semigroup.semigroup
 
+namespace hidden
 /-
 A monoid is a semigroup 
 with an element 1 
@@ -16,4 +17,6 @@ structure monoid (M : Type u) extends (semigroup M), (has_one M) : Type u :=
 (one_mul : ∀ (a : M), mul one a = a)    -- extended data
 (mul_one : ∀ (a : M), mul a one = a)    -- extended data
 
+#check monoid
 
+end hidden

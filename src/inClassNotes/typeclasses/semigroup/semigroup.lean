@@ -1,5 +1,6 @@
 universe u
 
+namespace hidden
 /-
 A semigroup is a set G with an associative multiplication operator, 
 mul. Many differet sets G can be treated as semigroups, as long as
@@ -13,3 +14,5 @@ structure semigroup (G : Type u) extends has_mul G : Type u :=
 
 #check semigroup
 
+
+end hidden
