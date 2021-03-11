@@ -180,7 +180,7 @@ def incThenSqr' := compose sqr inc
 def sqrThenInc' := compose inc sqr 
 def sqrlen := compose sqr string.length
 
-#eval incThenSqr 5  -- expect 36
+#eval incThenSqr' 5  -- expect 36
 #eval incThenSqr 5  -- expect 26
 #eval sqrlen "Hello!"
 
@@ -207,7 +207,8 @@ Type 2          Sort 3
 etc    
 -/
 
-universes u₁ u₂ u₃ 
+universes u₁ u₂ u₃
+
 
 -- introduce some local assumptions
 variables (f : Sort u₁ → Sort u₂) (g : Sort u₂ → Sort u₃)
