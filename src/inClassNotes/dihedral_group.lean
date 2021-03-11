@@ -13,7 +13,7 @@ inductive Action_D4 : Type
 open Action_D4
 #check Action_D4
 
-def Cayley: Action_D4 → Action_D4 → Action_D4
+def comp: Action_D4 → Action_D4 → Action_D4
 | R0 b := b
 | b R0 := b
 | R90 R90 := R180
@@ -66,7 +66,7 @@ def Cayley: Action_D4 → Action_D4 → Action_D4
 | D' D:= R180
 | D' D':= R0
 
-#reduce Cayley R0 D
+#reduce comp R0 D
 
 universe u
 
@@ -74,7 +74,9 @@ def fold {α: Type u}: α → (α → α → α) → list α → α
 | a f [] := a
 | a f (h::t) := f h (fold a f t)
 
-#reduce fold R0 Cayley [R0,R180,R180,R90]
-#reduce fold R0 Cayley [R90,H]
+def comp_list (a: list Action_D4): Action_D4:= fold R0 comp a
+
+#reduce comp_list [R0,R180,R180,R90]
+#reduce comp_list [R90,H]
 
 end hidden
