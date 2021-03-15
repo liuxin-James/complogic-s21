@@ -173,6 +173,7 @@ def add_monoid_foldr
 | [] := has_zero.zero
 | (h::t) := add_groupoid.add h (add_monoid_foldr t)  
 
+#eval mul_monoid_foldr [1,2]
 #eval mul_monoid_foldr [1,2,3,4,5]
 #eval add_monoid_foldr [1,2,3,4,5]   -- missing instance above
 

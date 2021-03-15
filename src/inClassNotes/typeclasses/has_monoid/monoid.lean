@@ -1,4 +1,4 @@
-import ..semigroup.semigroup
+import semigroup.semigroup
 
 namespace hidden
 /-
