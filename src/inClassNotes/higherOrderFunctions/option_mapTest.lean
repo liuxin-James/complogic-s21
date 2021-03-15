@@ -8,12 +8,8 @@ def map_option_nat_nat :
   (option nat) → 
   option nat 
 | f option.none := option.none
-<<<<<<< HEAD
 | f (option.some v) := option.some (f v) 
-=======
-| f (option.some v) := option.some (_) 
--- by case analysis on the option argument
->>>>>>> 02a3f4d24c3926279b3d61af458d69c2e979b8c8
+
 
 
 

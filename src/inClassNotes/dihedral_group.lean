@@ -1,3 +1,4 @@
+
 namespace hidden
 
 inductive Action_D4 : Type
