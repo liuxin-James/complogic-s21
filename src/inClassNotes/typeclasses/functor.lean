@@ -165,6 +165,8 @@ def fmap
 (f : α → β) 
 (l : c α) := map f l
 
+
+#check @fmap
 -- map over list
 #reduce fmap nat.succ [1,2,3,4,5]
 #reduce fmap nat.succ (some 1)
