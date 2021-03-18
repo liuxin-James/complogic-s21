@@ -1,6 +1,7 @@
-import ...inClassNotes.typeclasses.functor
-import ...inClassNotes.typeclasses.algebra
+import functor
+import algebra
 
+open alg
 /-
 Copy this file to where you want to work on 
 it and then adjust the imports accordingly.

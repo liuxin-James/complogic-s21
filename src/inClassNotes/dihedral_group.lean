@@ -81,3 +81,14 @@ def comp_list (a: list Action_D4): Action_D4:= fold R0 comp a
 #reduce comp_list [R90,H]
 
 end hidden
+
+def band_tactic: bool → bool → bool :=
+begin
+assume x y,
+cases x,
+exact ff,
+cases y,
+exact ff,
+exact tt,
+end
+#eval band_tactic tt ff
