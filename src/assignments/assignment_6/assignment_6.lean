@@ -24,8 +24,11 @@ class distrib (α : Type u) extends has_mul α, has_add α :=
 (left_distrib : ∀ a b c : α, a * (b + c) = (a * b) + (a * c))
 (right_distrib : ∀ a b c : α, (a + b) * c = (a * c) + (b * c))
 
-
 class ring (α : Type u) extends add_comm_group α, mul_monoid α, distrib α
+
+#check ring
+
+instance ring_Z: ring ℤ:= ⟨sorry, sorry, sorry⟩ 
 
 /-
 2. Go learn what an algebraic *field* is, then
@@ -36,7 +39,17 @@ the real numbers (ℝ) are both fields. Again you
 may (and should) stub out the proof fields in
 your instances using sorry.
 -/
+class comm_semigroup (α : Type u) extends mul_semigroup α :=
+(mul_comm : ∀ a b : α, a * b = b * a)
 
+class comm_ring (α : Type u) extends ring α, comm_semigroup α
+
+class field (α : Type u) extends comm_ring α, has_inv α, nontrivial α :=
+(mul_inv_cancel : ∀ {a : α}, a ≠ 0 → a * a⁻¹ = 1)
+(inv_zero : (0 : α)⁻¹ = 0)
+
+instance field_R: field ℝ:= ⟨sorry, sorry, sorry⟩ 
+instance field_Q: field ℚ:= ⟨sorry, sorry, sorry⟩ 
 
 /-
 3. Graduate students required. Undergrads extra
