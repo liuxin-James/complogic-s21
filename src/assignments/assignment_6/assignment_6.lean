@@ -10,6 +10,7 @@ as indicated. Turn in your completed file on
 Collab.
 -/
 universe  u
+universe  v
 /-
 1. We've imported our definitions from our
 class on basic algebraic structures, such as
@@ -39,10 +40,10 @@ the real numbers (ℝ) are both fields. Again you
 may (and should) stub out the proof fields in
 your instances using sorry.
 -/
-class comm_semigroup (α : Type u) extends mul_semigroup α :=
+class mul_comm_semigroup (α : Type u) extends mul_semigroup α :=
 (mul_comm : ∀ a b : α, a * b = b * a)
 
-class comm_ring (α : Type u) extends ring α, comm_semigroup α
+class comm_ring (α : Type u) extends ring α, mul_comm_semigroup α
 
 class field (α : Type u) extends comm_ring α, has_inv α, nontrivial α :=
 (mul_inv_cancel : ∀ {a : α}, a ≠ 0 → a * a⁻¹ = 1)
@@ -62,7 +63,32 @@ lieu of a formal proof, present a *brief informal*
 that the integers really do form a module under
 the usual arithmetic operators.
 -/
+class add_comm_semigroup (α : Type u) extends add_semigroup α :=
+(add_comm : ∀ a b : α, a + b = b + a)
 
+class add_comm_monoid (M : Type u) extends add_monoid M, add_comm_semigroup M
+
+class semiring (α : Type u) extends add_comm_monoid α, monoid_with_zero α, distrib α
+
+class has_scalar (α : Type u) (γ : Type v) := (smul : α → γ → γ)
+
+class mul_action (α : Type u) (β : Type v) [mul_monoid α] extends has_scalar α β :=
+(one_smul : ∀ b : β, (1 : α) * b = b)
+(mul_smul : ∀ (x y : α) (b : β), (x * y) * b = x * y * b)
+
+
+class distrib_mul_action (α : Type u) (β : Type v) [mul_monoid α] [add_monoid β] extends mul_action α β :=
+(smul_add : ∀(r : α) (x y : β), r • (x + y) = r • x + r • y)
+(smul_zero : ∀(r : α), r • (0 : β) = 0)
+
+class semimodule (α : Type u) (β : Type v) [semiring α]
+  [add_comm_monoid β] extends distrib_mul_action α β :=
+(add_smul : ∀(r s : α) (x : β), (r + s) • x = r • x + s • x)
+(zero_smul : ∀x : β, (0 : α) • x = 0)
+
+abbreviation module (α : Type u)(β: Type v) [ring α] [add_comm_group β] := semimodule α β
+
+instance module_R_M: module Z Z:= ⟨sorry, sorry, sorry⟩ 
 
 /-
 4. The set of (our representations of) natural
