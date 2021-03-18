@@ -9,7 +9,7 @@ Work through the file following directions
 as indicated. Turn in your completed file on
 Collab.
 -/
-
+universe  u
 /-
 1. We've imported our definitions from our
 class on basic algebraic structures, such as
@@ -20,12 +20,16 @@ expresses the claim that the integers (ℤ or
 *int* in Lean) is a ring. You may "stub out"
 the required proofs with *sorry*. 
 -/
+class distrib (α : Type u) extends has_mul α, has_add α :=
+(left_distrib : ∀ a b c : α, a * (b + c) = (a * b) + (a * c))
+(right_distrib : ∀ a b c : α, (a + b) * c = (a * c) + (b * c))
 
 
+class ring (α : Type u) extends add_comm_group α, mul_monoid α, distrib α
 
 /-
 2. Go learn what an algebraic *field* is, then
-define a typeclass to formalize its definition,
+define a typeclass to formalize its definition, 
 and finally define two instances that express
 the claims that the rational numbers (ℚ) and 
 the real numbers (ℝ) are both fields. Again you

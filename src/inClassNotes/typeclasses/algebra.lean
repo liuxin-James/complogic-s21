@@ -121,9 +121,6 @@ instance add_monoid_nat : add_monoid nat := ⟨ _ , _ ⟩
 ℚ is an additive group; ℚ-{0} is a multiplicative group.
 ℚ is thus a field. ℝ is a field in the same way. So is ℂ.
 -/ 
-
-
-
 /-
 So what good can all of this be? Here's one application.
 We've noted that arguments to foldr can be inconsistent. The
