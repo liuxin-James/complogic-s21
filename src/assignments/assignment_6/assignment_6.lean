@@ -88,7 +88,7 @@ class semimodule (α : Type u) (β : Type v) [semiring α]
 
 abbreviation module (α : Type u)(β: Type v) [ring α] [add_comm_group β] := semimodule α β
 
-instance module_R_M: module Z Z:= ⟨sorry, sorry, sorry⟩ 
+instance module_R_M: module ℤ ℤ:= ⟨sorry, sorry, sorry⟩ 
 
 /-
 4. The set of (our representations of) natural
@@ -112,21 +112,19 @@ you need to multiply, using your mul function.
 -/
 
 def add : nat → nat → nat
-| 0 m         := _
-| (n' + 1) m  := _
+| 0 m         := m
+| (n' + 1) m  := (add n' m) + 1
 
 def mul : nat → nat → nat
-| 0 m         := _
-| (n' + 1) m  := _ 
+| 0 m         := 0
+| (n' + 1) m  :=  add (mul n' m) m 
 
 -- first arg raised to second
 def exp : nat → nat → nat 
-| n 0 := _
-| n (m'+1) := _
+| n 0 := 1
+| n (m'+1) :=  mul n (exp n m')
 
 #eval exp 2 10    -- expect 1024
-
-
 /-
 5. Many computations can be expressed 
 as compositions of map and fold (also 
@@ -157,11 +155,18 @@ functions to implement your solution.
 -/
 
 open alg
+#check @mul_monoid_foldr
+#check @fmap
 
 -- Your answer here
+instance has_one_nat : has_one nat := ⟨ 1 ⟩ 
+instance mul_groupoid_nat : mul_groupoid nat := ⟨ nat.mul ⟩ 
+instance mul_semigroup_nat : mul_semigroup nat := ⟨ _ ⟩ 
+instance mul_monoid_nat : mul_monoid nat := ⟨ _ , _ ⟩ 
 
+def mul_map_reduce {α β: Type} (f: α → β ) (l: list α) : β := mul_monoid_foldr (fmap f l)
 
-
+#check @mul_map_reduce
 /-
 B. Complete the given application of 
 mul_map_reduce with a lambda expression 
@@ -170,7 +175,7 @@ values in the list
 [1,0,2,0,3,0,4].
 -/
 
-#eval mul_map_reduce  _ [1,0,2,0,3,0,4]
+#eval mul_map_reduce  (λ n, n ≠ 0) [1,0,2,0,3,0,4]
 -- expect 24
 
 /-
