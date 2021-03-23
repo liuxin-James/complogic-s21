@@ -32,7 +32,7 @@ def bnot : bool → bool
 | bool.ff := bool.tt    -- 1
 
 def band : bool → bool → bool
-| bool.tt bool.tt := bool.tt
+| bool.tt .tt := bool.tt
 | _ _ := bool.ff
 
 /-

@@ -29,7 +29,7 @@ class ring (α : Type u) extends add_comm_group α, mul_monoid α, distrib α
 
 #check ring
 
-instance ring_Z: ring ℤ:= ⟨sorry, sorry, sorry⟩ 
+instance ring_Z: ring ℤ:= ⟨sorry, sorry⟩ 
 
 /-
 2. Go learn what an algebraic *field* is, then
@@ -125,6 +125,7 @@ def exp : nat → nat → nat
 | n (m'+1) :=  mul n (exp n m')
 
 #eval exp 2 10    -- expect 1024
+
 /-
 5. Many computations can be expressed 
 as compositions of map and fold (also 
@@ -159,12 +160,12 @@ open alg
 #check @fmap
 
 -- Your answer here
-instance has_one_nat : alg.has_one nat := ⟨ 1 ⟩ 
-instance mul_groupoid_nat : mul_groupoid nat := ⟨ nat.mul ⟩ 
-instance mul_semigroup_nat : mul_semigroup nat := ⟨ _ ⟩ 
-instance mul_monoid_nat : mul_monoid nat := ⟨ _ , _ ⟩ 
+-- instance has_one_nat : alg.has_one nat := ⟨ 1 ⟩ 
+-- instance mul_groupoid_nat : mul_groupoid nat := ⟨ nat.mul ⟩ 
+-- instance mul_semigroup_nat : mul_semigroup nat := ⟨ _ ⟩ 
+-- instance mul_monoid_nat : mul_monoid nat := ⟨ _ , _ ⟩ 
 
-def mul_map_reduce {α β: Type} (f: α → β ) (l: list α) : β := mul_monoid_foldr (fmap f l)
+def mul_map_reduce {α β: Type} [mul_monoid β] (f: α → β) (l: list α) : β := mul_monoid_foldr (fmap f l)
 
 #check @mul_map_reduce
 /-
@@ -192,7 +193,7 @@ easier.
 
 inductive nat_eql: nat → nat → Type
 | zeros_equal : nat_eql 0 0
-| n_succ_m_succ_equal : Π {n m : nat}, _
+| n_succ_m_succ_equal : Π {n m : nat}, (nat_eql n-1 m-1) → (nat_eql n m)
 
 /-
 B. Now either complete the following programs
@@ -202,7 +203,7 @@ won't be possible.
 
 open nat_eql
 
-def eq_0_0 : nat_eql 0 0 := _
+def eq_0_0 : nat_eql 0 0 := zeros_equal
 def eq_0_1 : nat_eql 0 1 := _
 def eq_1_1 : nat_eql 1 1 := _
 def eq_2_2 : nat_eql 2 2 := _
@@ -286,11 +287,11 @@ call it nat_to_bool_coe. When you're done the
 test cases below should work.
 -/
 
-def nat_to_bool : nat → bool :=
-_
+def nat_to_bool : nat → bool 
+| 0 := ff
+| _ := tt
 
-instance nat_to_bool_coe : has_coe nat bool := 
-_
+instance nat_to_bool_coe : has_coe nat bool := ⟨ nat_to_bool ⟩ 
 
 def needs_bool : bool → bool := λ b, b
 
@@ -312,8 +313,8 @@ where the empty string returns ff and non-empty,
 tt. 
 -/
 
-instance string_to_nat_coe : _ := 
-_
+
+instance string_to_nat_coe : has_coe string nat := ⟨ λ (s : string), s.length ⟩ 
 
 -- Test cases
 #eval needs_bool "Hello"  -- expect tt

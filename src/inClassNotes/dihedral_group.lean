@@ -1,4 +1,5 @@
 import algebra
+#check monoid
 
 namespace hidden
 
