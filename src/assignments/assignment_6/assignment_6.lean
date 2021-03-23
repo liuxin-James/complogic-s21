@@ -154,11 +154,6 @@ as values of β have monoid structures.
 Use both our mul_monoid_foldr and fmap
 functions to implement your solution.
 -/
-
-open alg
-#check @mul_monoid_foldr
-#check @fmap
-
 -- Your answer here
 -- instance has_one_nat : alg.has_one nat := ⟨ 1 ⟩ 
 -- instance mul_groupoid_nat : mul_groupoid nat := ⟨ nat.mul ⟩ 
@@ -176,7 +171,7 @@ values in the list
 [1,0,2,0,3,0,4].
 -/
 
-#eval mul_map_reduce  (λ n, n ≠ 0) [1,0,2,0,3,0,4]
+#eval mul_monoid_foldr (fmap (λ  x, if x = 0 then 1  else x) [1,0,2,0,3,0,4])
 -- expect 24
 
 /-
