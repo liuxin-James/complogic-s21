@@ -26,63 +26,63 @@ A groupoid is a set with a binary operator. The only consraint
 is that the set must be closed under the given binary operator.
 Note: there are other definitions of groupoid in mathematics. A
 groupoid is also sometimes called a magma. Here, the set is given
-by the type, α, and the operator by the field, *mul*.
+by the type, α, and the operator by the field, *a_mul*.
 -/
 @[class]  
 structure mul_groupoid (α : Type u) :=   
-(mul : α → α → α)                    
+(a_mul : α → α → α)                    
 
 @[class]  
 structure add_groupoid (α : Type u) :=  -- aka mul_groupoid or magma
-(add : α → α → α)                       -- mul must be total (closed)
+(a_add : α → α → α)                       -- a_mul must be total (closed)
 
 /-
 A semigroup is a groupoid in which the operator is *associative*
 -/
 @[class]
 structure mul_semigroup (α : Type u) extends mul_groupoid α :=
-(assoc : ∀ (a b c : α), mul a (mul b c) = mul (mul a b) c)
+(mul_assoc : ∀ (a b c : α), a_mul a (a_mul b c) = a_mul (a_mul a b) c)
 
 @[class]
 structure add_semigroup (α : Type u) extends add_groupoid α :=
-(assoc : ∀ (a b c_1 : α), add a (add b c_1) = add (add a b) c_1)
+(a_add_assoc : ∀ (a b c_1 : α), a_add a (a_add b c_1) = a_add (a_add a b) c_1)
 
 /-
 A monoid is a semigroup with an identity element
 -/
 @[class]
 structure mul_monoid (α : Type u) extends mul_semigroup α, has_one α :=
-(ident_left : ∀ (a : α), mul one a = a)
-(ident_right: ∀ (a: α), mul a one = a)
+(mul_ident_left : ∀ (a : α), a_mul one a = a)
+(mul_ident_right: ∀ (a: α), a_mul a one = a)
 
 @[class]
 structure add_monoid (α : Type u) extends add_semigroup α, has_zero α :=
-(ident_left : ∀ (a : α), add zero a = a)
-(ident_right: ∀ (a: α), add a zero = a)
+(a_add_ident_left : ∀ (a : α), a_add zero a = a)
+(a_add_ident_right: ∀ (a: α), a_add a zero = a)
 
 /-
 A group is a mul_monoid in which every element has an inverse
 -/
 @[class]
 structure mul_group (α : Type u) extends mul_monoid α :=
-(left_inv : ∀ (a : α), ∃ (i : α), mul i a = one )
-(right_inv : ∀ (a : α), ∃ (i : α), mul a i = one )
+(mul_left_inv : ∀ (a : α), ∃ (i : α), a_mul i a = one )
+(mul_right_inv : ∀ (a : α), ∃ (i : α), a_mul a i = one )
 
 @[class]
 structure add_group (α : Type u) extends add_monoid α :=
-(left_ident : ∀ (a : α), ∃ (i : α), add i a = zero )
-(right_ident : ∀ (a : α), ∃ (i : α), add a i = zero )
+(a_add_left_ident : ∀ (a : α), ∃ (i : α), a_add i a = zero )
+(a_add_right_ident : ∀ (a : α), ∃ (i : α), a_add a i = zero )
 
 /-
 A group is commutative, or abelian, if its operator is commutative.
 -/
 @[class]
 structure mul_comm_group (α : Type u) extends mul_group α :=
-(comm : ∀ (a b : α), mul a b = mul b a )
+(mul_comm : ∀ (a b : α), a_mul a b = a_mul b a )
 
 @[class]
 structure add_comm_group (α : Type u) extends add_group α :=
-(comm : ∀ (a b : α), add a b = add b a )
+(a_add_comm : ∀ (a b : α), a_add a b = a_add b a )
 
 /-
 You can keep going to define a whole hierarchy of algebraic
@@ -116,9 +116,9 @@ instance add_monoid_nat : add_monoid nat := ⟨ _ , _ ⟩
 -- instance mul_group_nat : mul_group nat := ⟨ _, _ ⟩ 
 
 /-
-ℕ isn't a group under either add or mul! No inverses. 
-ℤ is an additive group but not a multiplicative group.
-ℚ is an additive group; ℚ-{0} is a multiplicative group.
+ℕ isn't a group under either a_add or a_mul! No inverses. 
+ℤ is an a_additive group but not a multiplicative group.
+ℚ is an a_additive group; ℚ-{0} is a multiplicative group.
 ℚ is thus a field. ℝ is a field in the same way. So is ℂ.
 -/ 
 /-
@@ -147,7 +147,7 @@ don't know quite yet how to give these proofs, but that's
 the idea.  
 
 Here are implementations of foldr taking multiplicative and
-additive monoids as arguments. Note that the code is written
+a_additive monoids as arguments. Note that the code is written
 to depend only on the definitions of the relevant typeclasses.
 You can thus use this fold to reduce lists of values of any 
 type as long as that type provides an implementation of the 
@@ -159,7 +159,7 @@ Lean does NOT support dot notation for typeclass instances.
 Look carefully below: Lean infers an instance of mul_monoid.
 That instance in turn extends has_one and mul_semigroup. The
 latter extends mul_groupoid (formerly, and in Lean, has_mul).
-To get at the mul function of the monoid that we need here,
+To get at the a_mul function of the monoid that we need here,
 we refer to it through the typeclass, up the inheritance
 hierarchy, that defines it directly: here, mul_groupoid.
 -/
@@ -169,16 +169,16 @@ def mul_monoid_foldr
   :
   list α → α 
 | [] := has_one.one
-| (h::t) := mul_groupoid.mul h (mul_monoid_foldr t)  
+| (h::t) := mul_groupoid.a_mul h (mul_monoid_foldr t)  
 
--- Additive version of the same foldr function.
+-- a_additive version of the same foldr function.
 def add_monoid_foldr 
   {α : Type u} 
   [add_monoid α] 
   :
   list α → α 
 | [] := has_zero.zero
-| (h::t) := add_groupoid.add h (add_monoid_foldr t)  
+| (h::t) := add_groupoid.a_add h (add_monoid_foldr t)  
 
 #eval mul_monoid_foldr [1,2]
 #eval mul_monoid_foldr [1,2,3,4,5]

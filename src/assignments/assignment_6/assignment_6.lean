@@ -1,5 +1,5 @@
-import functor
-import algebra
+import inClassNotes.typeclasses.functor
+import inClassNotes.typeclasses.algebra
 
 open alg
 /-
@@ -159,7 +159,7 @@ open alg
 #check @fmap
 
 -- Your answer here
-instance has_one_nat : has_one nat := ⟨ 1 ⟩ 
+instance has_one_nat : alg.has_one nat := ⟨ 1 ⟩ 
 instance mul_groupoid_nat : mul_groupoid nat := ⟨ nat.mul ⟩ 
 instance mul_semigroup_nat : mul_semigroup nat := ⟨ _ ⟩ 
 instance mul_monoid_nat : mul_monoid nat := ⟨ _ , _ ⟩ 
