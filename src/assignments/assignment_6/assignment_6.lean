@@ -163,6 +163,7 @@ functions to implement your solution.
 def mul_map_reduce {α β: Type} [mul_monoid β] (f: α → β) (l: list α) : β := mul_monoid_foldr (fmap f l)
 
 #check @mul_map_reduce
+#check @mul_monoid_foldr
 /-
 B. Complete the given application of 
 mul_map_reduce with a lambda expression 
@@ -170,8 +171,7 @@ to compute the product of the non-zero
 values in the list 
 [1,0,2,0,3,0,4].
 -/
-
-#eval mul_monoid_foldr (fmap (λ  x, if x = 0 then 1  else x) [1,0,2,0,3,0,4])
+#eval mul_map_reduce (fun x, if x=0 then 1 else x ) [1,0,2,0,3,0,4]
 -- expect 24
 
 /-
@@ -188,7 +188,8 @@ easier.
 
 inductive nat_eql: nat → nat → Type
 | zeros_equal : nat_eql 0 0
-| n_succ_m_succ_equal : Π {n m : nat}, (nat_eql n-1 m-1) → (nat_eql n m)
+| n_succ_m_succ_equal : Π {n m : nat},  (nat_eql n m)
+--                        | n'+1 m'+1 := (nat_eql n' m')
 
 /-
 B. Now either complete the following programs
@@ -198,11 +199,12 @@ won't be possible.
 
 open nat_eql
 
-def eq_0_0 : nat_eql 0 0 := zeros_equal
-def eq_0_1 : nat_eql 0 1 := _
-def eq_1_1 : nat_eql 1 1 := _
-def eq_2_2 : nat_eql 2 2 := _
+#check nat_eql
 
+def eq_0_0 : nat_eql 0 0 := zeros_equal
+def eq_0_1 : nat_eql 0 1 := n_succ_m_succ_equal
+def eq_1_1 : nat_eql 1 1 := n_succ_m_succ_equal
+def eq_2_2 : nat_eql 2 2 := n_succ_m_succ_equal
 /-
 C. The apply tactic in Lean's tactic language
 let's you build the term you need by applying
@@ -241,6 +243,16 @@ def eq_500_500 : nat_eql 500 500 :=
 begin
 end
 
+-- def band_tactic: bool → bool → bool :=
+-- begin
+-- assume x y,
+-- cases x,
+-- exact ff,
+-- cases y,
+-- exact ff,
+-- exact tt,
+-- end
+-- #eval band_tactic tt ff
 
 /-
 7. Typeclasses and instances are used in Lean

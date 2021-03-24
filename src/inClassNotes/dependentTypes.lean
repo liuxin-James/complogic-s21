@@ -239,7 +239,7 @@ sigma.snd : Π {α : Type u} {β : α → Type v} (c : sigma β), β c.fstLean
 #check Σ (n : nat), tuple n   -- dependent pair type, ⟨ n, tuple n ⟩ 
 
 def s3 : Σ (n : nat), tuple n := sigma.mk 3 (1,2,3,unit.star) 
-def s5 : Σ (n : nat), tuple n := ⟨  5, (nToNtuple 5) ⟩ 
+def s5 : Σ (n : nat), tuple n := ⟨ 5, (nToNtuple 5) ⟩ 
 def sx : Σ (n : nat), tuple n := ⟨ 5, (nToNtuple 4) ⟩ -- Cannot form, snd has wrong type
 
 #print sigma 
