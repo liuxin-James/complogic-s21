@@ -1,12 +1,5 @@
-<<<<<<< HEAD
 import inClassNotes.typeclasses.functor
 import inClassNotes.typeclasses.algebra
-=======
-import .field_rename
-import ...inClassNotes.typeclasses.functor
-import ...inClassNotes.typeclasses.algebra
-import data.real.basic
->>>>>>> upstream/master
 
 open alg
 /-
@@ -70,20 +63,12 @@ class mul_comm_semigroup (α : Type u) extends mul_semigroup α :=
 
 class comm_ring (α : Type u) extends ring α, mul_comm_semigroup α
 
-<<<<<<< HEAD
 class field (α : Type u) extends comm_ring α, has_inv α, nontrivial α :=
 (mul_inv_cancel : ∀ {a : α}, a ≠ 0 → a * a⁻¹ = 1)
 (inv_zero : (0 : α)⁻¹ = 0)
 
 instance field_R: field ℝ:= ⟨sorry, sorry, sorry⟩ 
 instance field_Q: field ℚ:= ⟨sorry, sorry, sorry⟩ 
-=======
-class has_field (α : Type u) extends has_ring α, mul_monoid α :=
-(mul_comm : ∀ (a b : α), mul_groupoid.mul a b = mul_groupoid.mul b a )
-(mul_inv : ∀ (a : α), (a ≠ alg.has_zero.zero) → ∃ (ainv : α), mul_groupoid.mul a ainv = alg.has_one.one)
-
-instance has_field_rat : has_field ℚ := _
->>>>>>> upstream/master
 
 /-
 3. Graduate students required. Undergrads extra
@@ -146,11 +131,7 @@ you need to multiply, using your mul function.
 
 def add : nat → nat → nat
 | 0 m         := m
-<<<<<<< HEAD
 | (n' + 1) m  := (add n' m) + 1
-=======
-| (n' + 1) m  := nat.succ (add n' m)
->>>>>>> upstream/master
 
 def mul : nat → nat → nat
 | 0 m         := 0
@@ -191,10 +172,6 @@ as values of β have monoid structures.
 Use both our mul_monoid_foldr and fmap
 functions to implement your solution.
 -/
-<<<<<<< HEAD
-=======
-
->>>>>>> upstream/master
 -- Your answer here
 -- instance has_one_nat : alg.has_one nat := ⟨ 1 ⟩ 
 -- instance mul_groupoid_nat : mul_groupoid nat := ⟨ nat.mul ⟩ 
@@ -229,13 +206,8 @@ easier.
 
 inductive nat_eql: nat → nat → Type
 | zeros_equal : nat_eql 0 0
-<<<<<<< HEAD
 | n_succ_m_succ_equal : Π {n m : nat},  (nat_eql n m)
---                        | n'+1 m'+1 := (nat_eql n' m')
-=======
-| n_succ_m_succ_equal : Π {n m : nat}, 
-    nat_eql n m → _
->>>>>>> upstream/master
+---                        | n'+1 m'+1 := (nat_eql n' m')
 
 /-
 B. Now either complete the following programs
