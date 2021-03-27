@@ -106,8 +106,6 @@ open is_always_rainy
 #check is_always_rainy mo
 #check is_always_rainy tu
 
-
-
 lemma bad_tuesdays : is_always_rainy tu := mo_rainy _ _ -- stuck
 lemma bad_fridays : is_always_rainy fr := mo_rainy _ _    -- stuck
 lemma bad_mondays : is_always_rainy mo := mo_rainy mo (eq.refl mo)
