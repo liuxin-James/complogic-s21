@@ -159,7 +159,7 @@ inductive eq {α : Sort u} (a : α) : α → Prop
 #check eq 1 1
 #check 1 = 1    -- same thing
 #check @eq.refl
-#check eq.refl 1
+#check eq.refl 1 
 
 end eql
 
@@ -216,9 +216,9 @@ Properties of equality
 An equivalence relation
 -/
 
-#check eq.refl
-#check eq.symm
-#check eq.trans
+#check @eq.refl
+#check @eq.symm
+#check @eq.trans
 #check @eq.rec
 
 

@@ -21,6 +21,7 @@ expresses the claim that the integers (ℤ or
 *int* in Lean) is a ring. You may "stub out"
 the required proofs with *sorry*. 
 -/
+
 class distrib (α : Type u) extends has_mul α, has_add α :=
 (left_distrib : ∀ a b c : α, a * (b + c) = (a * b) + (a * c))
 (right_distrib : ∀ a b c : α, (a + b) * c = (a * c) + (b * c))
@@ -35,16 +36,16 @@ open alg
 
 set_option old_structure_cmd true
 
-universe u
-
 class has_ring (α : Type u) 
   extends alg.add_comm_group α, mul_monoid α :=
 (dist_left : ∀ (a b c : α), 
-  mul_groupoid.mul a (add_groupoid.add b c) = 
-  add_groupoid.add (mul_groupoid.mul a b) (mul_groupoid.mul a c))
+  mul_groupoid.a_mul a (add_groupoid.a_add b c) = 
+  add_groupoid.a_add (mul_groupoid.a_mul a b) (mul_groupoid.a_mul a c))
 (dist_right : ∀ (a b c : α), 
-  mul_groupoid.mul (add_groupoid.add b c) a = 
-  add_groupoid.add (mul_groupoid.mul b a) (mul_groupoid.mul c a))
+  mul_groupoid.a_mul (add_groupoid.a_add b c) a = 
+  add_groupoid.a_add (mul_groupoid.a_mul b a) (mul_groupoid.a_mul c a))
+
+#check has_ring
 
 axioms (T : Type) (t_add : T → T → T) (t_mul : T → T → T)
 
@@ -58,6 +59,7 @@ the real numbers (ℝ) are both fields. Again you
 may (and should) stub out the proof fields in
 your instances using sorry.
 -/
+set_option old_structure_cmd true
 class mul_comm_semigroup (α : Type u) extends mul_semigroup α :=
 (mul_comm : ∀ a b : α, a * b = b * a)
 

@@ -96,7 +96,7 @@ namely one claims that a specific day, d, is
 always rainy. 
 -/
 
-inductive is_always_rainy : day → Sort 0
+inductive is_always_rainy : day → Prop
 | mo_rainy : ∀ (d :day), (d = mo) → is_always_rainy d
 
 open is_always_rainy

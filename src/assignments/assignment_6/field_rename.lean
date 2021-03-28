@@ -1,6 +1,6 @@
-import ...inClassNotes.typeclasses.algebra
+import inClassNotes.typeclasses.algebra
 
-
+set_option old_structure_cmd true
 
 /-
 Inheriting two fields with same name
@@ -10,15 +10,15 @@ open alg
 
 -- need to enable "old_structure" option here
 
-class another_two_muls (A : Type) extends mul_groupoid A renaming mul→mul1,
-                                          mul_groupoid A renaming mul→mul2
+class another_two_muls (A : Type) extends mul_groupoid A renaming a_mul → mul1
+                                          mul_groupoid A renaming a_mul → mul2
 
 instance another_two_muls_nat : another_two_muls nat := ⟨ nat.mul, nat.add ⟩ 
 
 def nat_nat_mul1 [another_two_muls nat] (a b : ℕ) := 
 another_two_muls.mul2 a b
 
-#eval nat_nat_mul1 2 3
+#reduce nat_nat_mul1 2 3
 
 /-
 Inheriting same field twice 
