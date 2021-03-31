@@ -19,7 +19,7 @@ Introduction: construct a term
 
 -- ∀ {α : Sort u_1} (a : α), a = a
 
-example : eq 1 0 := _
+example : eq 1 0 := eq.refl 0
 example : eq 1 1 := eq.refl 1
 
 /-
@@ -41,7 +41,6 @@ axioms  -- some assumptions we can work with
 -- write proof term
 example : livesInCville Robert := 
   eq.subst keqr klic
-
 
 -- use rw tactic
 example : livesInCville Robert :=
@@ -70,7 +69,7 @@ theorem eq_is_trans :
 begin
   intros α a b c ab bc, 
   rw ab,
-  assumption,
+  exact bc,  ---assumption
 end
 
 -- HW: prove eq_is_trans by writing a proof term explicitly
@@ -131,6 +130,7 @@ begin
   intros x y xy,
   rw xy,
   unfold transitive,
-  _
-
+  intros a b c ab bc, 
+  rw ab,
+  exact bc, 
 end
