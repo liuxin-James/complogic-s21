@@ -11,10 +11,8 @@ are true, in the form of proofs. Our rule
 for constructing evidence for P ∧ Q thus
 demands evidence for P and evidence for
 Q and yields evidence for P ∧ Q. 
--/
-
+-/ 
 #check and
-
 /-
 structure and (a b : Prop) : Prop :=
 intro :: (left : a) (right : b)
