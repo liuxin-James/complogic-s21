@@ -13,6 +13,8 @@ prefix `¬` := not
 
 lemma not_false' : ¬ false := λ f, f
 
+#check not_false'
+
 /-
 For any proposition, P, to prove ¬P,
 assume that P is true and show that

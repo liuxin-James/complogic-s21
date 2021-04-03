@@ -24,7 +24,7 @@ function type, P → Q. It all makes sense!
 -/
 
 lemma and_commutes' : ∀ {P Q : Prop}, P ∧ Q → Q ∧ P :=
-λ P Q, λ h, and.intro (h.right) (h.left) 
+λ P Q h, and.intro (h.right) (h.left) 
 
 /-
 This is the introduction rule for →. Assume 

@@ -32,7 +32,7 @@ lemma paq : P ∧ Q := ⟨ p, q ⟩
 #check paq
 #reduce paq 
 
-#check and.elim_left
+#check @and.elim_left
 
 /-
 def and.elim_left {a b : Prop} (h : and a b) : a := h.1
@@ -42,8 +42,8 @@ def and.elim_right {a b : Prop} (h : and a b) : b := h.2
 #reduce and.elim_left paq
 #reduce and.elim_right paq
 
-example : 0 = 0 ∧ 1 = 0 :=
-and.intro (eq.refl 0) (eq.refl _)   -- stuck
+example : 0 = 0 ∧ 1 = 1 :=
+and.intro (eq.refl 0) (eq.refl 1)   -- stuck
 
 
 lemma zzoo : 0 = 0 ∧ 1 = 1 :=

@@ -23,8 +23,6 @@ lemma all1 : ∀ (n : nat), n = n := λ n, (eq.refl n)
 
 lemma all2 (n : nat) : n = n := rfl
 
-#check ∀ (n : nat), n = n 
-
 -- Introduction rule for forall 
 
 /-
