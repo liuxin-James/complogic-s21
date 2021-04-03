@@ -208,8 +208,13 @@ easier.
 
 inductive nat_eql: nat → nat → Type
 | zeros_equal : nat_eql 0 0
+<<<<<<< HEAD
 | n_succ_m_succ_equal : Π {n m : nat},  (nat_eql n m)
 ---                        | n'+1 m'+1 := (nat_eql n' m')
+=======
+| n_succ_m_succ_equal : Π {n m : nat}, 
+    nat_eql n m → nat_eql (n+1) (m+1)
+>>>>>>> upstream/master
 
 /-
 B. Now either complete the following programs
@@ -219,7 +224,14 @@ won't be possible.
 
 open nat_eql
 
+<<<<<<< HEAD
 #check nat_eql
+=======
+def eq_0_0 : nat_eql 0 0 := zeros_equal
+def eq_0_1 : nat_eql 0 1 := _
+def eq_1_1 : nat_eql 1 1 := n_succ_m_succ_equal eq_0_0
+def eq_2_2 : nat_eql 2 2 := n_succ_m_succ_equal (n_succ_m_succ_equal eq_0_0)
+>>>>>>> upstream/master
 
 def eq_0_0 : nat_eql 0 0 := zeros_equal
 def eq_0_1 : nat_eql 0 1 := n_succ_m_succ_equal
@@ -245,6 +257,17 @@ until you're done. Voila!
 
 def eq_10_10 : nat_eql 10 10 :=
 begin
+  apply n_succ_m_succ_equal,
+  apply n_succ_m_succ_equal,
+  apply n_succ_m_succ_equal,
+  apply n_succ_m_succ_equal,
+  apply n_succ_m_succ_equal,
+  apply n_succ_m_succ_equal,
+  apply n_succ_m_succ_equal,
+  apply n_succ_m_succ_equal,
+  apply n_succ_m_succ_equal,
+  apply n_succ_m_succ_equal,
+  exact eq_0_0,
 end
 
 /-
@@ -261,8 +284,11 @@ ok with us.
 
 def eq_500_500 : nat_eql 500 500 :=
 begin
+  repeat {apply n_succ_m_succ_equal},
+  exact eq_0_0,
 end
 
+<<<<<<< HEAD
 -- def band_tactic: bool → bool → bool :=
 -- begin
 -- assume x y,
@@ -273,6 +299,10 @@ end
 -- exact tt,
 -- end
 -- #eval band_tactic tt ff
+=======
+#reduce eq_500_500
+
+>>>>>>> upstream/master
 
 /-
 7. Typeclasses and instances are used in Lean

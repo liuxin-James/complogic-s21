@@ -38,5 +38,56 @@ theorem neg_elim : ∀ (P : Prop), ¬(¬P) → P :=
   P
 ¬ P → false
 ¬ (¬ P) → P   -- negation elimination
-              -- double negation elimination
+              -- aka double negation elimination
 -/
+
+
+/-
+¬ P means (is defined as) P → false
+-/
+
+#check false 
+
+axiom P : Prop
+axiom func : P → false 
+/-
+This proves ¬P!
+This is a definition: ¬P means P → false
+-/
+
+#check not 
+
+#check string.length
+#check (string.length "hello")
+
+-- impossibility elimination
+example : ¬ 1 = 0 :=
+λ h, 
+  match h with
+  -- secret sauce: there are no cases
+  end
+
+example : ¬ 1 = 0 :=  -- 1=0 → false
+begin
+  assume h,           -- assume 1=0
+                      -- show false in all cases
+                      -- but there are no cases
+                      -- so that is all of them
+  cases h,
+end 
+
+/-
+Contradictions are impossible.
+-/
+lemma no_contra : ¬ (P ∧ ¬ P) :=
+λ h, 
+  (h.right h.left)
+
+/-
+Nonsense implies nonsense.
+-/
+example : 1 = 0 → 2 = 3 := 
+begin
+  assume h,
+  cases h,
+end 
