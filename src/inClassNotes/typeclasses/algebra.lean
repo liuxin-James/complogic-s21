@@ -89,17 +89,17 @@ set_option old_structure_cmd true
 class has_ring (α : Type u) 
   extends alg.add_comm_group α, mul_monoid α :=
 (dist_left : ∀ (a b c : α), 
-  mul_groupoid.mul a (add_groupoid.add b c) = 
-  add_groupoid.add (mul_groupoid.mul a b) (mul_groupoid.mul a c))
+  mul_groupoid.a_mul a (add_groupoid.a_add b c) = 
+  add_groupoid.a_add (mul_groupoid.a_mul a b) (mul_groupoid.a_mul a c))
 (dist_right : ∀ (a b c : α), 
-  mul_groupoid.mul (add_groupoid.add b c) a = 
-  add_groupoid.add (mul_groupoid.mul b a) (mul_groupoid.mul c a))
+  mul_groupoid.a_mul (add_groupoid.a_add b c) a = 
+  add_groupoid.a_add (mul_groupoid.a_mul b a) (mul_groupoid.a_mul c a))
 
 class has_module (α β : Type) extends has_ring α, add_group β :=
-(add_comm : ∀ (b1 b2 : β), add_groupoid.add b1 b2 = add_groupoid.add b2 b1)
+(add_comm : ∀ (b1 b2 : β), add_groupoid.a_add b1 b2 = add_groupoid.a_add b2 b1)
 (scale : α → β → β)
-(rule1: ∀ (a1 a2 : α) (b : β), scale (mul_groupoid.mul a1 a2) b = scale a1 (scale a2 b) )
-(rule2: ∀ (a : α) (b1 b2 : β), scale a (add_groupoid.add b1 b2) = add_groupoid.add (scale a b1) (scale a b2))
+(rule1: ∀ (a1 a2 : α) (b : β), scale (mul_groupoid.a_mul a1 a2) b = scale a1 (scale a2 b) )
+(rule2: ∀ (a : α) (b1 b2 : β), scale a (add_groupoid.a_add b1 b2) = add_groupoid.a_add (scale a b1) (scale a b2))
 
 
 

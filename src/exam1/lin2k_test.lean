@@ -238,15 +238,16 @@ inductive Z5 : Type
 | two
 | three
 | four
+
 -- axioms 
 --   (Z5 : Type) 
 --   (zero one two three four: Z5)
 
 open Z5
 -- HERE
-instance field_Z5: field Z5 := ⟨ _, _, _ ⟩ 
 
-def Z5add: Z5 → Z5 → Z5 
+
+def z5add: Z5 → Z5 → Z5 
 | zero zero :=  zero
 | zero one := one
 | zero two := two
@@ -274,7 +275,7 @@ def Z5add: Z5 → Z5 → Z5
 | four four := three
 
 
-def Z5mul: Z5 → Z5 → Z5 
+def z5mul: Z5 → Z5 → Z5 
 | zero _ := zero
 | one zero := zero
 | one one := one
@@ -297,6 +298,65 @@ def Z5mul: Z5 → Z5 → Z5
 | four three := two
 | four four := one
 
+--add_comm_group
+instance : has_zero Z5 := ⟨ zero ⟩ 
+instance : has_add Z5 := ⟨ z5add ⟩ 
+lemma add_assoc_Z5: ∀ (a b c : Z5), z5add a (z5add b c) = z5add (z5add a b) c := sorry
+instance : add_semigroup Z5 := ⟨ add_assoc_Z5 ⟩ 
+lemma add_ident_left : ∀ (a : Z5), z5add zero a = a := sorry
+lemma add_ident_right: ∀ (a: Z5), z5add a zero = a := sorry
+instance : add_monoid Z5 := ⟨ add_ident_left , add_ident_right⟩ 
+lemma add_left_ident : ∀ (a : Z5), ∃ (i : Z5), z5add i a = zero := sorry
+lemma add_right_ident : ∀ (a : Z5), ∃ (i : Z5), z5add a i = zero := sorry
+instance : add_group Z5 := ⟨add_left_ident, add_right_ident⟩ 
+lemma add_comm_Z5 : ∀ (a b : Z5), z5add a b = z5add b a := sorry
+instance : add_comm_group Z5 := ⟨ add_comm_Z5 ⟩ 
+
+--mul_comm_group
+instance : has_one Z5 := ⟨ one ⟩ 
+instance : has_mul Z5 := ⟨ z5mul ⟩ 
+lemma mul_assoc_Z5: ∀ (a b c : Z5), z5mul a (z5mul b c) = z5mul (z5mul a b) c := sorry
+instance : semigroup Z5 := ⟨ mul_assoc_Z5 ⟩ 
+lemma mul_ident_left : ∀ (a : Z5), z5mul one a = a := sorry
+lemma mul_ident_right: ∀ (a: Z5), z5mul a one = a := sorry
+instance : monoid Z5 := ⟨ mul_ident_left , mul_ident_right⟩ 
+lemma mul_left_ident : ∀ (a : Z5), ∃ (i : Z5), z5mul i a = one := sorry
+lemma mul_right_ident : ∀ (a : Z5), ∃ (i : Z5), z5mul a i = one := sorry
+instance : group Z5 := ⟨mul_left_ident, mul_right_ident⟩ 
+lemma mul_comm_Z5 : ∀ (a b : Z5), z5mul a b =z5mul b a := sorry
+instance : comm_group Z5 := ⟨ mul_comm_Z5 ⟩ 
+
+--distrib
+lemma left_distrib_Z5 : ∀ a b c : Z5, z5mul a (z5add b c) = z5add (z5mul a  b) (z5mul a  c) := sorry
+lemma right_distrib_Z5 : ∀ a b c : Z5, z5mul (z5add a  b) c = z5add (z5mul a  c) (z5mul b  c)  := sorry
+instance : distrib Z5 := ⟨left_distrib_Z5, right_distrib_Z5⟩ 
+
+--ring
+instance : ring Z5 := ⟨ _ ⟩ 
+
+--comm_semigroup 
+lemma mul_comm_semi_Z5 : ∀ a b : Z5, z5mul a b = z5mul b  a := sorry
+instance : comm_semigroup Z5 := ⟨ mul_comm_semi_Z5 ⟩ 
+
+--comm_ring
+instance : comm_ring Z5:= ⟨ _ ⟩ 
+
+--nontrivial
+lemma exists_pair_ne_Z5 : ∃ (x y :Z5), x ≠ y :=sorry
+instance : nontrivial Z5 :=⟨ exists_pair_ne_Z5 ⟩  
+
+--field 
+lemma mul_inv_cancel_Z5 : ∀ {a : Z5}, a ≠ zero → a * a⁻¹ = one := sorry
+lemma inv_zero_Z5 : (zero : Z5)⁻¹ = zero := sorry
+instance field_Z5: field Z5 := ⟨ mul_inv_cancel_Z5, inv_zero_Z5 ⟩ 
+/-
+class comm_ring (α : Type u) extends ring α, comm_semigroup α
+
+class field (K : Type u) extends comm_ring K, div_inv_monoid K, nontrivial K :=
+(mul_inv_cancel : ∀ {a : K}, a ≠ 0 → a * a⁻¹ = 1)
+(inv_zero : (0 : K)⁻¹ = 0)
+-/
+
 /-
 B. [15 points]
 
@@ -316,8 +376,15 @@ that it's working correctly.
 -/
 
 -- HERE
-abbreviation z5scalr := Z5
-abbreviation z5vectr := Z5 ⨯ Z5
+abbreviation z5scalr [field Z5]  := Z5
+abbreviation z5vectr [field Z5] := (Z5, Z5)
+
+#check z5vectr
+
+def z1: z5vectr  := (one, three)
+def z2: z5vectr  := (two, three)
+def z3: z5vectr := two • z1 + z2
+#reduce z3
 
 /-
 Take away: Instantiating a typeclass

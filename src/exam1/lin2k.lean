@@ -49,7 +49,6 @@ field.
 
 universes u 
 variables {K : Type u} [field K] [inhabited K]
-
 /-
 Here's the typeclass we're going to instantiate.
 The two type arguments, K and K × K, specify the
@@ -240,6 +239,7 @@ Now you have a good sense of what each of these classes
 looks like: maybe some new data or operations, maybe
 some new structuring constraints/rules/invariants.
 -/
+#check vector_space
 instance : vector_space K (K × K) := semimodule_K_Kpair
 /-
 vector_space : 
