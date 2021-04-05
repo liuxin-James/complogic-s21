@@ -238,7 +238,6 @@ inductive Z5 : Type
 | two
 | three
 | four
-
 -- axioms 
 --   (Z5 : Type) 
 --   (zero one two three four: Z5)
