@@ -79,7 +79,7 @@ example : P ∧ Q ↔ Q ∧ P :=
 -- proof is pair: forward/backward proofs
 iff.intro 
   -- proof forward
-  (λ h, ⟨ h.right, h.left ⟩ )
+  (λ h, ⟨ h.right, h.left ⟩)
   -- proof backwards
   (λ h, ⟨ h.right, h.left ⟩)
 
