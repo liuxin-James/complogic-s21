@@ -232,23 +232,71 @@ can right away right click on "field" and
 to do. Solving this problem will require
 some digging through Lean library code.
 -/
-axioms 
-  (Z5 : Type) 
-  (zero one two three four: Z5)
+inductive Z5 : Type
+| zero
+| one
+| two
+| three
+| four
 
+-- axioms 
+--   (Z5 : Type) 
+--   (zero one two three four: Z5)
+
+open Z5
 -- HERE
+instance field_Z5: field Z5 := ⟨ _, _, _ ⟩ 
+
 def Z5add: Z5 → Z5 → Z5 
 | zero zero :=  zero
+| zero one := one
+| zero two := two
+| zero three := three
+| zero four := four
+| one zero := one
+| one one := two
+| one two := three
+| one three := four
 | one four := zero
+| two zero  := two
+| two one  := three
+| two two  := four
 | two three  := zero
+| two four  := one
+| three zero := three
+| three one := four
 | three two := zero
+| three three := one
+| three four := two
+| four zero := four
 | four one := zero
+| four two := one
+| four three := two
+| four four := three
+
 
 def Z5mul: Z5 → Z5 → Z5 
+| zero _ := zero
+| one zero := zero
 | one one := one
-| two three := one
-| three two:= one
-| four four:= one
+| one two := two
+| one three := three
+| one four := four
+| two zero  := zero
+| two one  := two
+| two two  := four
+| two three  := one
+| two four  := three
+| three zero := zero
+| three one := three
+| three two := one
+| three three := four
+| three four := two
+| four zero := zero
+| four one := four
+| four two := three
+| four three := two
+| four four := one
 
 /-
 B. [15 points]
@@ -269,6 +317,8 @@ that it's working correctly.
 -/
 
 -- HERE
+abbreviation z5scalr := Z5
+abbreviation z5vectr := Z5 ⨯ Z5
 
 /-
 Take away: Instantiating a typeclass
