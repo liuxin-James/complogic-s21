@@ -1,5 +1,5 @@
 import data.real.basic
-import .lin2k
+import exam1.lin2k
 
 
 -- Let's work with rational number field
@@ -18,7 +18,9 @@ vectr with values (4,6), (-6,2), and
 -/
 
 -- HERE
-
+def v1: vectr := ⟨4,6⟩ 
+def v2: vectr := ⟨-6,2⟩ 
+def v3: vectr := ⟨3, -7⟩ 
 /-
 1B. [10 points]
 
@@ -34,7 +36,7 @@ integer -1. (Note that subtraction
 of vectors, v2 - v1 is defined as
 v2 + (-1:K) • v1.)
 -/
-
+def v4: vectr := 2 • v1 + (-1:K) • v2 + v3
 -- HERE 
 
 /-
@@ -42,11 +44,11 @@ Compute the correct answer by hand
 here, showing your work, and check
 that eval is producing the correct
 answer. 
-
 -- HERE
 
 -/
-
+--(17,3)
+#eval v4
 /-
 1C. [10 points]
 
@@ -69,7 +71,7 @@ arrow) end of one vector at the head
 of the other then drawing the vector
 from the tail of the first to the head
 of the second. Draw the vectors that
-illustrate the sum, v1 + (-1:K) • v2,
+illustrate the sum, 2 • v1 + (-1:K) • v2,
 and then the sum of that with v3. You
 should come out with the same answer
 as before. Take a picture of your
@@ -112,6 +114,18 @@ inverses of each element. In the second
 table, write the multiplicative inverses.
 -/
 
+--additive inverses
+| 0  | 0 |
+| 1  | 4 |
+| 2  | 3 | 
+| 3  | 2 | 
+| 4  | 1 | 
+--multiplicative inverses
+| 0  | _ |
+| 1  | 1 |
+| 2  | 3 | 
+| 3  | 2 | 
+| 4  | 4 | 
 -- HERE
 
 /-
@@ -126,6 +140,13 @@ inverse, and briefly explain why.
 -/
 
 -- HERE
+Integers mod 4 is not a field, since 2 does not have a multiplicative inverse.
+
+--multiplicative inverses
+| 0  | _ |
+| 1  | 1 |
+| 2  | _ | 
+| 3  | 3 | 
 
 /-
 5. [20 points]
@@ -150,8 +171,18 @@ above, compute the expected sum, and
 show that your function returns the 
 expected/correct result.
 -/
-
+universe u
+def add_monoid_foldr 
+  {α : Type u} 
+  [add_monoid α] 
+  :
+  list α → α 
+| [] := has_zero.zero
+| (h::t) := has_add.add h (add_monoid_foldr t)  
 -- HERE
+
+--(18,4) = (4,6) + (-6,2) + (3, -7) + (17,3)
+#eval add_monoid_foldr  [v1,v2,v3,v4]
 
 /-
 6. Required for graduate students,
@@ -203,11 +234,21 @@ some digging through Lean library code.
 -/
 axioms 
   (Z5 : Type) 
-  (z5add : Z5 → Z5 → Z5)
-  (z5mul : Z5 → Z5 → Z5)
-  #check field Z5
+  (zero one two three four: Z5)
 
 -- HERE
+def Z5add: Z5 → Z5 → Z5 
+| zero zero :=  zero
+| one four := zero
+| two three  := zero
+| three two := zero
+| four one := zero
+
+def Z5mul: Z5 → Z5 → Z5 
+| one one := one
+| two three := one
+| three two:= one
+| four four:= one
 
 /-
 B. [15 points]

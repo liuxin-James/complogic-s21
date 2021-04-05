@@ -167,7 +167,7 @@ class has_scalar (α : Type u) (γ : Type v) := (smul : α → γ → γ)
 infixr ` • `:73 := has_scalar.smul
 -/
 def scalar_vector_mul : K → K × K → K × K
-| a (f,s) := ⟨ a * f, a * s ⟩ 
+| a ⟨f,s⟩  := ⟨ a * f, a * s ⟩ 
 
 -- For our scalars smul will be our smul
 instance : has_scalar K (K × K) := ⟨ scalar_vector_mul ⟩ 
