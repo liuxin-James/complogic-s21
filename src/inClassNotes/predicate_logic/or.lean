@@ -99,11 +99,10 @@ or is associative, full proof
 example : P ∨ (Q ∨ R) ↔ (P ∨ Q) ∨ R := 
 begin
   apply iff.intro _ _,
-  
-  -- Forwards ->
+    -- Forwards ->
   assume pqr,
   cases pqr with p qr,
-  apply or.inl _,
+  apply or.inl,
   exact or.inl p,
   cases qr with q r,
   apply or.inl,
@@ -112,6 +111,23 @@ begin
 
   -- Backwards <-
   assume pqr, 
-  cases pqr,
-  _
+  cases pqr with pq r,
+  cases pq with p q,
+  exact or.inl p,
+  apply or.inr,
+  exact or.inl q,
+  apply or.inr,
+  exact or.inr r,
+end
+
+example : P ∨ (Q ∨ R) → (P ∨ Q) ∨ R := 
+begin
+  assume pqr,
+  cases pqr with p qr,
+  apply or.inl _,
+  exact or.inl p,
+  cases qr with q r,
+  apply or.inl,
+  exact or.inr q,
+  exact or.inr r,
 end

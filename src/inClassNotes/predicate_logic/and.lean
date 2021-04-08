@@ -64,7 +64,7 @@ Prove it.
 -/
 axiom R : Prop
 
-lemma and_assoc_forward : (P ∧ Q) ∧ R -> P ∧ (Q ∧ R) :=
+lemma and_assoc_forward : (P ∧ Q) ∧ R → P ∧ (Q ∧ R) :=
 λ h, 
   (and.intro 
     h.left.left 
@@ -92,3 +92,17 @@ iff.intro
   (and_assoc_forward)
   (_)
   
+example : (P ∧ Q) ∧ R ↔ P ∧ (Q ∧ R) :=
+iff.intro 
+  (λ h, 
+  (and.intro 
+    h.left.left 
+   (and.intro h.left.right h.right)
+  ))
+  (λ h, 
+  and.intro
+  (and.intro 
+    h.left
+    h.right.left)
+    h.right.right
+  )
