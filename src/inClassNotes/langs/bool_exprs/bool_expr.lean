@@ -50,3 +50,11 @@ def bool_eval : bool_expr → bool
 
 -- assert and prove the proposition that for *any* Boolean expressions, e1 and e2, in LLBE, e1 && e2 "means" the same thing as e2 && e1
 
+example : ∀ (e1 e2: bool_expr), bool_eval (e1 && e2) = bool_eval (e2 && e1) :=
+begin
+  assume a b,
+  cases a1 : bool_eval a,
+  cases b1: bool_eval b,
+  apply bool_eval (a && b),
+  exact bool_eval (b && a),
+end

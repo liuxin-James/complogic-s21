@@ -88,8 +88,8 @@ def band_tactic: bool → bool → bool :=
 begin
 assume x y,
 cases x,
-exact ff,
 cases y,
+exact ff,
 exact ff,
 exact tt,
 end
