@@ -55,6 +55,11 @@ begin
   assume a b,
   cases a1 : bool_eval a,
   cases b1: bool_eval b,
-  apply bool_eval (a && b),
-  exact bool_eval (b && a),
+  assumption,
+end
+
+example : ∀ (e1 e2: bool_expr), bool_eval (e1 && e2) = bool_eval (e2 && e1) → bool_eval (e2 && e1) = bool_eval (e1 && e2):=
+begin
+  introv h,
+  exact h.symm,
 end

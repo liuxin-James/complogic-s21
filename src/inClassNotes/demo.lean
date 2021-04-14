@@ -38,3 +38,33 @@ begin
   exact eq.refl 0,
   exact eq.refl 16,
 end
+
+
+example (p q : Prop) : p ∧ q → q ∧ p :=
+begin
+  intro h,
+  cases h,
+  split,
+  assumption,
+  assumption,
+end
+
+example (p q : Prop) : p ∧ q → q ∧ p :=
+assume ⟨h₁, h₂⟩,
+and.intro (by assumption) (by assumption)
+
+
+example (P Q : Prop) : P ∧ Q → Q ∧ P :=
+λ (h : P ∧ Q), and.intro h.right h.left
+
+example : ∀ (a b : nat), a = b → b = a :=
+begin
+introv h,
+exact h.symm,
+end
+
+example : ∀ a b : nat, a = b → ∀ c, b = c → a = c :=
+begin
+introv h₁ h₂,
+exact h₁.trans h₂
+end
