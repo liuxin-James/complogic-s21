@@ -82,6 +82,7 @@ example : bool_eval (¬e2 ∨ e1) bool_state_4 = ff := rfl
 
 -- An expression with variable expressions as subexpressions
 def e5' := [Pvar] ∧ [Qvar]
+#eval bool_eval e5'  bool_state_4
 
 /-
 Properties

@@ -52,14 +52,12 @@ def bool_eval : bool_expr → bool
 
 example : ∀ (e1 e2: bool_expr), bool_eval (e1 && e2) = bool_eval (e2 && e1) :=
 begin
-  assume a b,
-  cases a1 : bool_eval a,
-  cases b1: bool_eval b,
-  assumption,
-end
-
-example : ∀ (e1 e2: bool_expr), bool_eval (e1 && e2) = bool_eval (e2 && e1) → bool_eval (e2 && e1) = bool_eval (e1 && e2):=
-begin
-  introv h,
-  exact h.symm,
+  assume e1 e2,
+  simp [bool_eval],
+  cases (bool_eval e1),
+  cases (bool_eval e2),
+  apply rfl,
+  apply rfl,
+  cases (bool_eval e2),
+  repeat {apply rfl},
 end
