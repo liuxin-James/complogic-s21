@@ -1,4 +1,4 @@
-import ...inClassNotes.langs.bool_expr
+import inClassNotes.langs.bool_expr
 import data.bool
 
 
@@ -13,17 +13,17 @@ light of these changes in the software about which it proves
 that property. Hint: Be sure to add a state argument everywhere
 one is needed. Here's the original proof. Just fix it here.
 -/
-example : ∀ (e1 e2 : bool_expr), 
-  bool_eval (e1 ∧ e2) = bool_eval (e2 ∧ e1) 
+example : ∀ (e1 e2 : bool_expr) (st: bool_var → bool), 
+  bool_eval (e1 ∧ e2) st = bool_eval (e2 ∧ e1) st
   :=
 begin
-  assume e1 e2,
+  assume e1 e2 st,
   simp [bool_eval],
-  cases (bool_eval e1),
-  cases (bool_eval e2),
+  cases (bool_eval e1 st),
+  cases (bool_eval e2 st),
   apply rfl,
   apply rfl,
-  cases (bool_eval e2),
+  cases (bool_eval e2 st),
   repeat {apply rfl},
 end
 
@@ -54,7 +54,15 @@ find that they really do find bugs in code!
 example : ∀ (e1 e2 : bool_expr) (st: bool_var → bool), 
   bool_eval (¬e1 ∨ e2) st = bool_eval (e1 => e2) st  := 
 begin
-  -- your answer
+  assume e1 e2 st,
+  simp [bool_eval],
+  cases (bool_eval e1 st),
+  cases (bool_eval e2 st),
+  apply rfl,
+  apply rfl,
+  cases (bool_eval e2 st),
+  apply rfl,
+  apply rfl,
 end
 
 
@@ -79,7 +87,7 @@ We start by defining a predicate, bool_sem, with three arguments:
 a state, and expression, and a Boolean value. Applying bool_sem to
 such arguments (let's call them st, e, and b), yields a proposition,
 (bool_sem st e b). This proposition asserts that in state st, the
-expression, e (in our language), has as its semantic meaning the 
+expression e (in our language), has as its semantic meaning the 
 Boolean value, b. 
 -/
 
@@ -122,6 +130,24 @@ by ∨, ¬, and =>, respectively, and include comments like the ones just
 above under each new constructor to explain what it specifies. Just
 add your additional constructors to the preceding code in this file.
 -/
+
+/-
+If e1 and e2 are expressions, st is a state, b1 and b2 are
+bools, and the meaning of e1 in st is b1 or the meaning of e2 in st
+is b2, then the meaning of (e1 ∨ e2) in st is the Boolean, b1 || b2.
+-/
+| or_sem : ∀ (e1 e2 : bool_expr) (st : bool_var → bool) (b1 b2 : bool), 
+    bool_sem st e1 b1 → bool_sem st e2 b2 → bool_sem st (e1 ∨ e2) (b1 || b2)
+/-
+If we're given a Boolean value, b, an expression in our language, e, and a state, st, then the rule means the meaning of ¬e in st is the Boolean, (bnot b).
+-/
+| not_sem  (b : bool) (e : bool_expr) (st : bool_var → bool) : bool_sem st (¬e) (bnot b)  
+/-
+If e1 and e2 are expressions, st is a state, b1 and b2 are bools, and the meaning of e1 in st is b1 or the meaning of e2 in st is b2, then the meaning of (e1 => e2) in st is the Boolean, (bimp b1 b2).
+-/
+| imp_sem : ∀ (e1 e2 : bool_expr) (st : bool_var → bool) (b1 b2 : bool),
+    bool_sem st e1 b1 → bool_sem st e2 b2 → bool_sem st (e1 => e2) (bimp b1 b2)
+
 
 /- 3B. Challenging. Extra credit for undergraduates. Required for
 graduate students. Here you are asked to prove that for any two
@@ -181,6 +207,8 @@ begin
 
   -- forward direction
   assume h,
+  cases h,
+  apply bool_sem.and_sem,
 
 
   -- reverse direction
@@ -195,5 +223,42 @@ students, extra credit for undergraduates: prove that, given our
 semantics, the meaning of e1 + e2 is the same as that of e2 + e1, 
 in any state. 
 -/
+inductive avar : Type
+| mk (n : nat)
+
+open avar 
+
+inductive aexp : Type 
+| lit_exp (n : nat)
+| var_exp (a : avar)
+| add_exp(e1 e2 : aexp)
+
+open aexp
+
+notation `[` n `]` := lit_exp n
+notation `[` v `]` := var_exp v
+notation e1 + e2 := add_exp e1 e2
+
+inductive nat_sem : (avar → nat) → aexp → nat → Prop
+| lit_sem (n : nat) (e :  aexp) (st : avar → nat) : nat_sem st [n] n
+| var_sem (v : avar) (e :  aexp) (st : avar → nat) : nat_sem st [v] (st v)
+| add_sem : ∀ (e1 e2 : aexp) (st : avar → nat) (n1 n2: nat), 
+    nat_sem st e1 n1 → nat_sem st e2 n2 → nat_sem st (e1 + e2) (n1+n2)
+
+
+example : ∀ (e1 e2 : aexp) (st: avar → nat) (n :nat), 
+nat_sem st (e1 + e2) n ↔ nat_sem st (e2 + e1)  n:=
+begin
+  intros,
+  split,
+
+  -- forward direction
+  assume h,
+  cases n,
+
+
+  -- reverse direction
+
+end
 
 -- HERE

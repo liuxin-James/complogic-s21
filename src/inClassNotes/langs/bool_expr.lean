@@ -91,16 +91,16 @@ Properties
 -- Oops, this proof broke when we added state as an argument
 
 theorem and_connective_commutes : ∀ (e1 e2 : bool_expr), 
-  bool_eval (e1 ∧ e2) = bool_eval (e2 ∧ e1) 
+  bool_eval (e1 ∧ e2) bool_state_4 = bool_eval (e2 ∧ e1) bool_state_4 
   :=
 begin
   assume e1 e2,
   simp [bool_eval],
-  cases (bool_eval e1),
-  cases (bool_eval e2),
+  cases (bool_eval e1 bool_state_4),
+  cases (bool_eval e2 bool_state_4),
   apply rfl,
   apply rfl,
-  cases (bool_eval e2),
+  cases (bool_eval e2 bool_state_4),
   repeat {apply rfl},
 end
 
