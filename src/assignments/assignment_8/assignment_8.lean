@@ -208,11 +208,18 @@ begin
   -- forward direction
   assume h,
   cases h,
+  rw bool.band_comm,
   apply bool_sem.and_sem,
-
+  assumption,
+  assumption,
 
   -- reverse direction
-
+  assume h,
+  cases h,
+  rw bool.band_comm,
+  apply bool_sem.and_sem,
+  assumption,
+  assumption,
 end
 
 /- 4. [20 points]
@@ -245,6 +252,21 @@ inductive nat_sem : (avar → nat) → aexp → nat → Prop
 | add_sem : ∀ (e1 e2 : aexp) (st : avar → nat) (n1 n2: nat), 
     nat_sem st e1 n1 → nat_sem st e2 n2 → nat_sem st (e1 + e2) (n1+n2)
 
+-- lemma add_comm : ∀ n m : ℕ, nat.add n m = nat.add m  n
+-- | n 0     := eq.symm (nat.zero_add n)
+-- | n (m+1) :=
+--   suffices nat.add n (nat.succ m) = nat.add (nat.succ m) n, from
+--     eq.symm (nat.succ_add m n) ▸ this,
+--   congr_arg (add_comm n (nat.succ m))
+
+-- lemma add_comm : ∀ n m : ℕ, nat.add n m = nat.add m  n :=
+-- begin
+--   assume a b,
+--   cases a,
+--   cases b,
+--   apply rfl,
+-- end
+
 
 example : ∀ (e1 e2 : aexp) (st: avar → nat) (n :nat), 
 nat_sem st (e1 + e2) n ↔ nat_sem st (e2 + e1)  n:=
@@ -254,11 +276,13 @@ begin
 
   -- forward direction
   assume h,
-  cases n,
-
+  cases h,
+  apply nat_sem.add_sem,
 
   -- reverse direction
-
+  assume h,
+  cases h,
+  apply nat_sem.add_sem,
 end
 
 -- HERE
