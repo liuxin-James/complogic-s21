@@ -250,11 +250,11 @@ inductive nat_sem : (avar → nat) → aexp → nat → Prop
 | lit_sem (n : nat) (e :  aexp) (st : avar → nat) : nat_sem st [n] n
 | var_sem (v : avar) (e :  aexp) (st : avar → nat) : nat_sem st [v] (st v)
 | add_sem : ∀ (e1 e2 : aexp) (st : avar → nat) (n1 n2: nat), 
-    nat_sem st e1 n1 → nat_sem st e2 n2 → nat_sem st (e1 + e2) (n1+n2)
+    nat_sem st e1 n1 → nat_sem st e2 n2 → nat_sem st (e1 + e2) (n1 + n2)
 
 -- lemma add_comm : ∀ n m : ℕ, nat.add n m = nat.add m  n
 -- | n 0     := eq.symm (nat.zero_add n)
--- | n (m+1) :=
+-- | n (nat.succ m) :=
 --   suffices nat.add n (nat.succ m) = nat.add (nat.succ m) n, from
 --     eq.symm (nat.succ_add m n) ▸ this,
 --   congr_arg (add_comm n (nat.succ m))
@@ -267,6 +267,16 @@ inductive nat_sem : (avar → nat) → aexp → nat → Prop
 --   apply rfl,
 -- end
 
+variables (a b : nat)
+example : a + b = b + a :=
+begin
+rw nat.add_comm,
+end
+
+example : a + b = b.add a :=
+begin
+apply nat.add_comm,
+end
 
 example : ∀ (e1 e2 : aexp) (st: avar → nat) (n :nat), 
 nat_sem st (e1 + e2) n ↔ nat_sem st (e2 + e1)  n:=
@@ -277,12 +287,18 @@ begin
   -- forward direction
   assume h,
   cases h,
+  rw nat.add_comm,
   apply nat_sem.add_sem,
+  assumption,
+  assumption,
 
   -- reverse direction
   assume h,
   cases h,
+  rw nat.add_comm,
   apply nat_sem.add_sem,
+  assumption,
+  assumption,
 end
 
 -- HERE
